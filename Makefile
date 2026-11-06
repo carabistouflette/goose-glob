@@ -6,9 +6,9 @@ SANITIZER_CC ?= gcc
 setup:
 	./scripts/setup-goose.sh
 format:
-	"$(GOOSE)" format glob.goose walk.goose tests examples
+	"$(GOOSE)" format glob.goose walk.goose tests examples bench
 check:
-	"$(GOOSE)" format --check glob.goose walk.goose tests examples
+	"$(GOOSE)" format --check glob.goose walk.goose tests examples bench
 	"$(GOOSE)" check tests/matcher.goose
 	"$(GOOSE)" check tests/walk.goose
 	"$(GOOSE)" check tests/oracle.goose
@@ -35,3 +35,9 @@ sanitize:
 	ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 ./.build/matcher-sanitize
 	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/walk.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone --debug --no-bce -o .build/walk-sanitize
 	ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1 python3 tests/walk.py ./.build/walk-sanitize
+
+.PHONY: bench-prepare bench-compare
+bench-prepare:
+	python3 bench/run.py --goose "$(GOOSE)" --cc "$(CC)" --prepare-only
+bench-compare:
+	python3 bench/run.py --goose "$(GOOSE)" --cc "$(CC)" $(BENCH_FLAGS)

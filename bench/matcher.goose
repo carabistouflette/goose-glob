@@ -3,18 +3,33 @@ import glob from "..";
 import std;
 import os;
 struct Row { pattern: const u8[:], path: const u8[:], expected: i64 }
-fn measure(name: const u8[:], rows: Row[:], iterations: i64) {
+fn selected(mode: const u8[:], row: Row, patterns: (glob::Pattern&)[:], at: i64) -> bool, glob::Status {
+    if mode == "reused" { return glob::matches(patterns[at], row.path, glob::Options { hidden: true }); }
+    return glob::matches(row.pattern, row.path, glob::Options { hidden: true });
+}
+fn measure(mode: const u8[:], name: const u8[:], rows: Row[:], iterations: i64) {
     for row in rows {
         let matched, status = glob::matches(row.pattern, row.path, glob::Options { hidden: true });
         assert(status.error == glob::Error.None && (if matched { 1 } else { 0 }) == row.expected);
+    }
+    var compiled: glob::Pattern[>..]    = [];
+    var refs:     (glob::Pattern&)[>..] = [];
+    if mode == "reused" {
+        for row in rows {
+            let pattern, status = glob::compile(row.pattern); assert(status.error == glob::Error.None);
+            let result, checked = glob::matches(pattern, row.path, glob::Options { hidden: true });
+            assert(checked.error == glob::Error.None && (if result { 1 } else { 0 }) == row.expected);
+            let item .= compiled.push(copy(pattern)); refs.push(item);
+        }
     }
     var checksum = 0; var expected = 0;
     for i in iterations { expected += rows[i % rows.len].expected; }
     let start = clock_ns();
     for i in iterations {
         let row = rows[i % rows.len];
-        let matched, status = glob::matches(row.pattern, row.path, glob::Options { hidden: true });
-        checksum += if matched && status.error == glob::Error.None { 1 } else { 0 };
+        let matched, status = selected(mode, row, refs, i % rows.len);
+        assert(status.error == glob::Error.None);
+        checksum += if matched { 1 } else { 0 };
     }
     let elapsed = clock_ns() - start;
     assert(checksum == expected);
@@ -28,9 +43,9 @@ fn main() {
     for line in split(data, "\n") {
         if line.len == 0 { continue; }
         let fields = split(line, "\t"); assert(fields.len == 4);
-        if rows.len > 0 && fields[0] != name { measure(name, rows, iterations); rows.clear(); }
+        if rows.len > 0 && fields[0] != name { measure(argv[3], name, rows, iterations); rows.clear(); }
         name = fields[0]; let expected, parsed = parse_int(fields[3]); assert(parsed);
         rows.push(Row { fields[1], fields[2], expected });
     }
-    if rows.len > 0 { measure(name, rows, iterations); }
+    if rows.len > 0 { measure(argv[3], name, rows, iterations); }
 }

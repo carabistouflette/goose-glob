@@ -3,12 +3,15 @@ package main
 import (
  "fmt"
  "os"
+ "path/filepath"
+ "sort"
  "strconv"
  "strings"
  "time"
  "github.com/bmatcuk/doublestar/v4"
 )
 func main() {
+ if os.Args[3] == "walk" { walk(); return }
  data, err := os.ReadFile(os.Args[1]); if err != nil { panic(err) }
  count, err := strconv.Atoi(os.Args[2]); if err != nil || count < 1 { panic("iterations") }
  var rows [][]string
@@ -26,4 +29,17 @@ func main() {
   fmt.Printf("%s\t%d\t%d\t%d\n",group[0][0],elapsed,count,sum)
   start=end
  }
+}
+
+func walk() {
+ root:=os.Args[1]; count,err:=strconv.Atoi(os.Args[2]); if err!=nil { panic(err) }
+ collect:=func() []string { paths,e:=doublestar.Glob(os.DirFS(root), "**/*.goose", doublestar.WithFilesOnly(), doublestar.WithNoFollow(), doublestar.WithFailOnIOErrors()); if e!=nil { panic(e) }; return paths }
+ checksum:=func(paths []string) int64 { sum:=int64(len(paths))*1000003; for _,p:=range paths { sum+=int64(len(p)) }; return sum }
+ paths:=collect(); sort.Strings(paths)
+ expectedText,err:=os.ReadFile(filepath.Join(filepath.Dir(root),"walk-expected.txt"));if err!=nil { panic(err) }
+ if strings.Join(paths,"\n")+"\n"!=string(expectedText) { panic("path set") }
+ expected:=checksum(paths); var sum int64; began:=time.Now()
+ for i:=0;i<count;i++ { sum+=checksum(collect()) }
+ ns:=time.Since(began).Nanoseconds(); if sum!=expected*int64(count) { panic("checksum") }
+ fmt.Printf("walk\t%d\t%d\t%d\n",ns,count,sum)
 }

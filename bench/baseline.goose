@@ -14,7 +14,8 @@ fn measure(name: const u8[:], rows: Row[:], iterations: i64) {
     for i in iterations {
         let row = rows[i % rows.len];
         let matched, status = glob::matches(row.pattern, row.path, glob::Options { hidden: true });
-        checksum += if matched && status.error == glob::Error.None { 1 } else { 0 };
+        assert(status.error == glob::Error.None);
+        checksum += if matched { 1 } else { 0 };
     }
     let elapsed = clock_ns() - start;
     assert(checksum == expected);

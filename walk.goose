@@ -22,7 +22,7 @@ fn from_fs(status: fs::Status) -> glob::Status {
         os_error: status.os_error,
     };
 }
-fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: const u8[:], excludes: const (const u8[:])[:],
+fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
          depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
     var entries: fs::Entry[>..] = [];
     let listed = fs::list_sorted_at(root, if prefix.len == 0 { "." } else { prefix }, 1048576, 4096, entries);
@@ -82,11 +82,14 @@ fn collect_into(root_path: const u8[:], pattern: const u8[:], excludes: const (c
        options.work_limit < 1 || options.work_limit > glob::MAX_WORK || excludes.len > 64 {
         return glob::Status { error: glob::Error.InvalidOptions };
     }
-    let checked = glob::validate(pattern);
+    let inclusion, checked = glob::compile(pattern);
     if checked.error != glob::Error.None { return checked; }
+    var compiled_excludes: glob::Pattern[>..]    = [];
+    var exclude_refs:      (glob::Pattern&)[>..] = [];
     for exclude in excludes {
-        let check = glob::validate(exclude);
+        let compiled, check = glob::compile(exclude);
         if check.error != glob::Error.None { return check; }
+        let item .= compiled_excludes.push(copy(compiled)); exclude_refs.push(item);
     }
     let context, created = fs::create_context();
     if created.error != fs::Error.None { return from_fs(created); }
@@ -101,7 +104,7 @@ fn collect_into(root_path: const u8[:], pattern: const u8[:], excludes: const (c
         let item = state.pending[at];
         let prefix = str(state.paths[item.start..item.end]);
         let depth = item.depth;
-        result = scan_directory(root, prefix, pattern, excludes, depth, options, state, out);
+        result = scan_directory(root, prefix, inclusion, exclude_refs, depth, options, state, out);
         if result.error != glob::Error.None { break; }
         at++;
     }

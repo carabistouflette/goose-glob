@@ -41,6 +41,11 @@ fn main() {
 ```
 
 `matches(pattern, path, options = Options { .. })` returns `(bool, Status)`.
+For repeated use, `compile(pattern)` returns an owned `Pattern` and `Status`;
+pass that pattern to the same `matches` function. The compiled value owns its
+bytes and can be reused without parsing the pattern again. A failed compilation
+returns an empty pattern; matching it reports `InvalidPattern`. Treat pattern
+fields as implementation details; do not mutate them.
 A non-match is `false` with `Error.None`. Invalid syntax and exceeded limits are
 errors, always returning `false`. `validate(pattern)` checks syntax independently.
 
@@ -108,7 +113,8 @@ Patterns: 1024 bytes. Paths: 4095 bytes. Either: at most 128 components.
 Matcher work is bounded by a fuel counter for component transitions, greedy
 matching steps and class scans; valid limits are 1–16777216. Validation and path
 splitting are bounded separately by the input caps. Fuel is an implementation
-limit, not a time unit or hard memory limit.
+limit, not a time unit or hard memory limit. Its accounting can change as matching
+gets cheaper; do not depend on exact exhaustion thresholds across versions.
 
 Collector options (default; accepted range):
 
@@ -146,6 +152,6 @@ make sanitize SANITIZER_CC=clang
 Tests cover syntax and byte semantics, shared fuel exhaustion, exact result
 bounds, hidden/excluded directories, binary filenames, symlinks, FIFOs, missing
 paths, and oversized listings. An independent Python `fnmatch`/recursive model
-checks 2088 seeded cases for the shared dialect. No performance ranking is claimed.
+checks 5104 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
 See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [design](docs/DESIGN.md), and [dependency provenance](THIRD_PARTY.md).

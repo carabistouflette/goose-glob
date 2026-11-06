@@ -7,6 +7,7 @@ fn matcher(p: &str) -> GlobMatcher {
 }
 fn main() {
     let args: Vec<_> = env::args().collect();
+    if args[3] == "walk" { walk(&args); return; }
     let data = fs::read_to_string(&args[1]).unwrap();
     let iterations: usize = args[2].parse().unwrap();
     let reused = args[3] == "reused";
@@ -34,4 +35,27 @@ fn main() {
         println!("{}\t{}\t{}\t{}", group[0][0], ns, iterations, checksum);
         start = end;
     }
+}
+
+fn walk(args: &[String]) {
+    let root = std::path::Path::new(&args[1]);
+    let pattern = format!("{}/**/*.goose", args[1]);
+    let count: usize = args[2].parse().unwrap();
+    let collect = || -> Vec<String> {
+        glob::glob_with(&pattern, glob::MatchOptions { case_sensitive: true, require_literal_separator: true,
+            require_literal_leading_dot: true }).unwrap()
+            .map(|entry| entry.unwrap()).filter(|p| p.is_file())
+            .map(|p| p.strip_prefix(root).unwrap().to_str().unwrap().to_owned()).collect()
+    };
+    let checksum = |paths: &[String]| paths.len() * 1000003 + paths.iter().map(|p| p.len()).sum::<usize>();
+    let mut paths = collect(); paths.sort();
+    let expected_text = fs::read_to_string(root.parent().unwrap().join("walk-expected.txt")).unwrap();
+    assert_eq!(paths.join("\n") + "\n", expected_text);
+    let expected = checksum(&paths);
+    let mut sum = 0usize;
+    let start = Instant::now();
+    for _ in 0..count { sum += checksum(black_box(&collect())); }
+    let ns = start.elapsed().as_nanos();
+    assert_eq!(sum, expected * count);
+    println!("walk\t{}\t{}\t{}", ns, count, sum);
 }
