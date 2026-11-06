@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-alpha.3
 
 Fused pattern validation/classification; literal-run scanning, whole-literal and
 single-component fast paths; bounded chunk searching for literal-only multi-star
