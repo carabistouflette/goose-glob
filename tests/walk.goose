@@ -39,6 +39,22 @@ fn main() {
     let single = glob_walk::collect(root, "main.goose", ["src", "vendor"],
         glob_walk::Options { max_results: 1, max_result_bytes: 10 }, out);
     assert(single.error == glob::Error.None && out.len == 1);
+    // Validate exact upper option bounds without allocating to each cap.
+    let upper = glob_walk::collect(root, "main.goose", excludes,
+        glob_walk::Options { max_depth: 64, max_entries: 65536, max_results: 65536,
+            max_result_bytes: 16777216, work_limit: glob::MAX_WORK }, out);
+    assert(upper.error == glob::Error.None && out.len == 1);
+    failed(root, glob_walk::Options { max_depth: 65 }, glob::Error.InvalidOptions);
+    failed(root, glob_walk::Options { max_entries: 65537 }, glob::Error.InvalidOptions);
+    failed(root, glob_walk::Options { max_results: 65537 }, glob::Error.InvalidOptions);
+    failed(root, glob_walk::Options { max_result_bytes: 16777217 }, glob::Error.InvalidOptions);
+    failed(root, glob_walk::Options { work_limit: glob::MAX_WORK + 1 }, glob::Error.InvalidOptions);
+    var many_excludes: const u8[:][>..] = []; many_excludes.resize(64, "unused");
+    let exact_excludes = glob_walk::collect(root, "main.goose", many_excludes, glob_walk::Options { .. }, out);
+    assert(exact_excludes.error == glob::Error.None && out.len == 1);
+    many_excludes.push("unused");
+    let too_many_excludes = glob_walk::collect(root, "main.goose", many_excludes, glob_walk::Options { .. }, out);
+    assert(too_many_excludes.error == glob::Error.InvalidOptions && out.len == 0);
     // A borrowed argument may refer to the old output: it is staged safely.
     out.clear(); out.push(str(root));
     for old in out {

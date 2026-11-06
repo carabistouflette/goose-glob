@@ -89,7 +89,7 @@ policy if you need to read them.
 - `**` must be an entire component and matches zero or more components.
   `**/*.goose` also matches `main.goose`; `a/**` matches `a` itself.
 - Classes support `[abc]`, `[a-z]`, and negation `[!abc]` or `[^abc]`.
-  A hyphen at either end is literal. Empty classes, reversed ranges and
+  A hyphen not used between two range endpoints is literal. Empty classes, reversed ranges and
   escapes inside classes are invalid. A closing `]` ends the class.
 - Outside classes, `\` escapes the next byte. Use `\[` for a literal `[`.
   A trailing escape is invalid. Separators cannot be escaped.
