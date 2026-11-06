@@ -3,8 +3,8 @@
 The matcher and collector have separate imports so text-only users need no
 filesystem dependency. The matcher classifies ordinary literal/prefix/suffix
 components and uses bounded slice comparisons for them. Literal-only components
-with several stars search nonoverlapping literal chunks, with the search window
-restricted by the work budget before searching. Classes are decoded once while
+with several stars search nonoverlapping literal chunks, with the first-byte search window
+restricted by fuel and subsequent prefix comparisons charged individually. Classes are decoded once while
 matching; more general components retain a greedy single-star scan. Pattern
 validation and classification share one scan, skipping ordinary literal runs.
 A validated literal pattern equal to its candidate establishes candidate validity;

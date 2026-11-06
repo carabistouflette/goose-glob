@@ -21,7 +21,7 @@ fn spend(budget: Budget&) -> bool {
 }
 let PATH_END = byte_set("/\0");
 let PATTERN_META = byte_set("/\0\\[?*");
-inline fn valid_component_length(path: const u8[:], start: i64, end: i64) -> bool {
+inline fn valid_component_span(path: const u8[:], start: i64, end: i64) -> bool {
     let size = end - start;
     return size > 0 && !(size == 1 && path[start] == '.') &&
            !(size == 2 && path[start] == '.' && path[start + 1] == '.');
@@ -33,11 +33,11 @@ fn split(path: const u8[:], out: Span[>..]&) -> bool {
     for c, i in path {
         if c == 0 { return false; }
         if c == '/' {
-            if !valid_component_length(path, start, i) || out.len == MAX_COMPONENTS { return false; }
+            if !valid_component_span(path, start, i) || out.len == MAX_COMPONENTS { return false; }
             out.push(Span { start: start, end: i }); start = i + 1;
         }
     }
-    if !valid_component_length(path, start, path.len) || out.len == MAX_COMPONENTS { return false; }
+    if !valid_component_span(path, start, path.len) || out.len == MAX_COMPONENTS { return false; }
     out.push(Span { start: start, end: path.len }); return true;
 }
 // Returns the closing bracket, or -1 for an empty/malformed class.
@@ -84,7 +84,7 @@ fn scan_pattern(pattern: const u8[:], out: Part[>..]&) -> bool {
             }
             at++;
         }
-        if !valid_component_length(pattern, start, at) || out.len == MAX_COMPONENTS { return false; }
+        if !valid_component_span(pattern, start, at) || out.len == MAX_COMPONENTS { return false; }
         let kind = if globstar { ComponentKind.Globstar } else if general { ComponentKind.General }
                    else if stars == 0 { ComponentKind.Literal }
                    else if stars == 1 && pattern[start] == '*' { ComponentKind.Suffix }
@@ -162,8 +162,35 @@ fn component_matches(pattern: const u8[:], name: const u8[:], hidden: bool, budg
     if p < pattern.len && pattern[p] == '*' { p++; }
     return p == pattern.len;
 }
+// Search only as many candidate bytes as the remaining work budget permits.
+// Count actual prefix comparisons, so cheap first-byte misses do not consume
+// the worst-case length of a large literal chunk.
+fn find_chunk(source: const u8[:], chunk: const u8[:], budget: Budget&) -> i64 {
+    let positions = source.len - chunk.len + 1;
+    var at = 0;
+    while at < positions {
+        let allowed = min(positions - at, budget.remaining);
+        if allowed == 0 { budget.exhausted = true; return -1; }
+        let found = position(source[at..at + allowed], chunk[0]);
+        budget.remaining -= if found < 0 { allowed } else { found + 1 };
+        if found < 0 {
+            if allowed < positions - at { budget.exhausted = true; }
+            return -1;
+        }
+        at += found;
+        var matched = 1;
+        while matched < chunk.len {
+            if !spend(budget) { return -1; }
+            if source[at + matched] != chunk[matched] { break; }
+            matched++;
+        }
+        if matched == chunk.len { return at; }
+        at++;
+    }
+    return -1;
+}
 // Literal-only star patterns search whole chunks rather than retrying one byte
-// at a time. Every search is charged for its bounded worst-case comparisons.
+// at a time. The search window and each comparison are bounded by fuel.
 fn star_matches(pattern: const u8[:], name: const u8[:], budget: Budget&) -> bool {
     if pattern[pattern.len - 1] != '*' && name[name.len - 1] != pattern[pattern.len - 1] { return false; }
     var p = 0; var n = 0;
@@ -181,15 +208,8 @@ fn star_matches(pattern: const u8[:], name: const u8[:], budget: Budget&) -> boo
                 n = chunk.len;
             } else { return ends_with(name[n..], chunk); }
         } else {
-            let positions = name.len - n - chunk.len + 1;
-            let allowed = min(positions, budget.remaining / chunk.len);
-            if allowed == 0 { budget.exhausted = true; return false; }
-            let found = find(name[n..n + allowed + chunk.len - 1], chunk);
-            budget.remaining -= (if found < 0 { allowed } else { found + 1 }) * chunk.len;
-            if found < 0 {
-                if allowed < positions { budget.exhausted = true; }
-                return false;
-            }
+            let found = find_chunk(name[n..], chunk, budget);
+            if found < 0 { return false; }
             n += found + chunk.len;
         }
     }
@@ -279,7 +299,7 @@ inline fn match_result(pattern: const u8[:], parts: Part[:], globstars: i64, pat
     }
     // The common one-component case needs no temporary path-span array.
     if parts.len == 1 && globstars == 0 && path.len > 0 && path.len <= MAX_PATH_BYTES && find_any(path, PATH_END) < 0 {
-        if !valid_component_length(path, 0, path.len) { return false, Status { error: Error.InvalidPath }; }
+        if !valid_component_span(path, 0, path.len) { return false, Status { error: Error.InvalidPath }; }
         var budget = Budget { remaining: options.work_limit };
         let part = parts[0];
         let matched = spend(budget) && part_matches(pattern[part.start..part.end], path, part.kind, options.hidden, budget);

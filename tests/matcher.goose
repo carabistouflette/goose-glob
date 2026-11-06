@@ -57,6 +57,14 @@ fn main() {
     for path in ["src//other", "src/../other", "src/other/", "src/other\0x"] {
         let _, status = glob::matches("src/main", path); assert(status.error == glob::Error.InvalidPath);
     }
+    // Long cheap misses must not be charged a full chunk per candidate.
+    var long_pattern = str("*"); long_pattern.resize(501, 'a'); long_pattern.append("*b");
+    var long_name = str(""); long_name.resize(3000, 'x'); long_name.resize(3500, 'a'); long_name.push('b');
+    check(long_pattern, long_name, true);
+    var partial_pattern = str("*a"); partial_pattern.resize(501, 'b'); partial_pattern.append("*z");
+    var partial_name = str(""); for _ in 1500 { partial_name.append("ac"); }
+    partial_name.push('a'); for _ in 499 { partial_name.push('b'); } partial_name.push('z');
+    check(partial_pattern, partial_name, true);
     let _, search_limit = glob::matches("*abc*def*", "XXXXXXXXabcYYYYdefZZ", glob::Options { work_limit: 2 });
     assert(search_limit.error == glob::Error.LimitExceeded);
     let searched, search_ok = glob::matches("*abc*def*", "XXXXXXXXabcYYYYdefZZ");
