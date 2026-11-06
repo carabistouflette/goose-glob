@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-alpha.2
 
 Owned prepared patterns for repeated matching; literal/prefix/suffix comparisons,
 linear component matching and greedy globstars; collector pattern reuse, held directory roots and listing-type reuse with a
