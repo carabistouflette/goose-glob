@@ -34,7 +34,7 @@ fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, 
 fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
          depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
     var entries: fs::Entry[>..] = [];
-    let listed = fs::list_sorted_at(root, ".", 1048576, 4096, entries);
+    let listed = fs::list_sorted_at(root, ".", fs::ListOptions { byte_limit: 1048576, entry_limit: 4096, adaptive: true }, entries);
     if listed.error != fs::Error.None { return from_fs(listed); }
     for entry in entries {
         if state.visited == options.max_entries { return glob::Status { error: glob::Error.LimitExceeded }; }

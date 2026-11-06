@@ -10,7 +10,7 @@ fn failed(root: const u8[:], options: glob_walk::Options, expected: glob::Error)
     assert(status.error == expected && out.len == 0);
 }
 fn main() {
-    let argv = args(); assert(argv.len == 3);
+    let argv = args(); assert(argv.len == 4);
     let root = argv[1];
     var out: u8[][>..] = [];
     let excludes = ["vendor", ".build"];
@@ -55,6 +55,10 @@ fn main() {
     many_excludes.push("unused");
     let too_many_excludes = glob_walk::collect(root, "main.goose", many_excludes, glob_walk::Options { .. }, out);
     assert(too_many_excludes.error == glob::Error.InvalidOptions && out.len == 0);
+    // More than 64 KiB of names exercises adaptive staging's reread path.
+    let wide = glob_walk::collect(argv[3], "*.goose", [],
+        glob_walk::Options { max_entries: 300, max_results: 300, max_result_bytes: 71700 }, out);
+    assert(wide.error == glob::Error.None && out.len == 300);
     // A borrowed argument may refer to the old output: it is staged safely.
     out.clear(); out.push(str(root));
     for old in out {

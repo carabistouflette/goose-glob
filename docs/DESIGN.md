@@ -15,7 +15,8 @@ holds byte spans and depths; paths live in a bounded byte arena. Breadth-first
 processing avoids recursive frames and holding one directory descriptor per
 level. Each scan holds its directory Root while inspecting entries, avoiding
 reopening ancestor paths for every metadata call. Patterns and exclusions are
-prepared once per collection. Each listing is sorted and filtered. Known listing types avoid redundant metadata;
+prepared once per collection. Adaptive filesystem staging avoids initializing
+a 1 MiB buffer for every small directory; large listings may be read again. Each listing is sorted and filtered. Known listing types avoid redundant metadata;
 unknown types use no-follow metadata on the held directory. Directory opens still
 refuse symlinks. Entries are classified
 and either queued or matched. Failures discard the staged output.
