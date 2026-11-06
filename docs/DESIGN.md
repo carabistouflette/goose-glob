@@ -2,9 +2,14 @@
 
 The matcher and collector have separate imports so text-only users need no
 filesystem dependency. The matcher classifies ordinary literal/prefix/suffix
-components and uses
-bounded slice comparisons for them. Other components use a greedy single-star
-scan. A single `**` matches the fixed components from both ends; multiple `**`
+components and uses bounded slice comparisons for them. Literal-only components
+with several stars search nonoverlapping literal chunks, with the search window
+restricted by the work budget before searching. Classes are decoded once while
+matching; more general components retain a greedy single-star scan. Pattern
+validation and classification share one scan, skipping ordinary literal runs.
+A validated literal pattern equal to its candidate establishes candidate validity;
+mismatches still validate the entire candidate. Single-component matching avoids
+temporary path-span storage. Small dispatch helpers inline into their callers. A single `**` matches the fixed components from both ends; multiple `**`
 components use a greedy scan with one retry point. There is no recursive matching
 or dynamic-programming matrix. `compile` owns validated component metadata for
 callers matching many paths; the raw API parses only once per call. Both paths

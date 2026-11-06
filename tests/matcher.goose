@@ -23,6 +23,12 @@ fn main() {
     check("a/??", "a/é", true);
     check("*a*b", "aaacb", true);
     check("*a*b", "aaac", false);
+    check("*ab*bc", "abc", false);
+    check("*ab*bc", "abbc", true);
+    check("ab*cd*ef", "abXXcdYYef", true);
+    check("ab*cd*ef", "abXXcdYYefZZ", false);
+    check("ab*cd*ef*", "abXXcdYYefZZ", true);
+    check("*é*é", "éxé", true);
     check("[a-c][!0-9]", "bz", true);
     check("[a-c][^0-9]", "b1", false);
     check("[-a]", "-", true);
@@ -42,12 +48,19 @@ fn main() {
     check("**", "a/.hidden", false);
     let hidden, hs = glob::matches("**", "a/.hidden", glob::Options { hidden: true });
     assert(hidden && hs.error == glob::Error.None);
-    for pattern in ["", "/a", "a/", "a//b", ".", "..", "a/../b", "a\\", "***", "a**", "[]", "[!]", "[z-a]", "[a", "[\\a]", "a\0b"] {
+    for pattern in ["", "/a", "a/", "a//b", ".", "..", "a/../b", "a\\", "***", "a**", "[]", "[!]", "[z-a]", "[a", "[\\a]", "a\0b", "[a/b]", "[.-/]", "[a-\0]", "a\\\0"] {
         let _, status = glob::matches(pattern, "a"); assert(status.error == glob::Error.InvalidPattern);
     }
     for path in ["", "/a", "a/", "a//b", ".", "..", "a/./b", "a\0b"] {
         let _, status = glob::matches("**", path); assert(status.error == glob::Error.InvalidPath);
     }
+    for path in ["src//other", "src/../other", "src/other/", "src/other\0x"] {
+        let _, status = glob::matches("src/main", path); assert(status.error == glob::Error.InvalidPath);
+    }
+    let _, search_limit = glob::matches("*abc*def*", "XXXXXXXXabcYYYYdefZZ", glob::Options { work_limit: 2 });
+    assert(search_limit.error == glob::Error.LimitExceeded);
+    let searched, search_ok = glob::matches("*abc*def*", "XXXXXXXXabcYYYYdefZZ");
+    assert(searched && search_ok.error == glob::Error.None);
     let _, limited = glob::matches("*a*a*a*a*b", "aaaaaaaaaaaab", glob::Options { work_limit: 3 });
     assert(limited.error == glob::Error.LimitExceeded);
     let _, invalid = glob::matches("*", "a", glob::Options { work_limit: -1 });

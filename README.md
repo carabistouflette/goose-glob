@@ -155,7 +155,7 @@ make sanitize SANITIZER_CC=clang
 Tests cover syntax and byte semantics, shared fuel exhaustion, exact result
 bounds, hidden/excluded directories, binary filenames, symlinks, FIFOs, missing
 paths, and oversized listings. An independent Python `fnmatch`/recursive model
-checks 5104 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
+checks 7081 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
 See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [design](docs/DESIGN.md), and [dependency provenance](THIRD_PARTY.md).
 

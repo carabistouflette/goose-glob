@@ -107,7 +107,10 @@ def prepare(args):
     reference.mkdir(exist_ok=True)
     source = call(['git','-C',ROOT,'show', f'{args.reference}:glob.goose'],capture_output=True).stdout
     (reference/'glob.goose').write_text(source)
-    adapter = (ROOT/'bench/baseline.goose').read_text().replace('from ".."', f'from "{reference}"')
+    # Reuse the prepared API in references that provide it; the initial alpha
+    # retains its legacy adapter because it has no compile/Pattern API.
+    reference_adapter = 'matcher.goose' if 'fn compile(' in source else 'baseline.goose'
+    adapter = (ROOT/'bench'/reference_adapter).read_text().replace('from ".."', f'from "{reference}"')
     (OUT/'baseline.goose').write_text(adapter)
     call([goose, 'build', OUT/'baseline.goose', '--cc', cc, '--stdlib', stdlib, '-O2', '-o', OUT/'baseline'])
     (reference/'walk.goose').write_text(call(['git','-C',ROOT,'show', f'{args.reference}:walk.goose'],capture_output=True).stdout)
@@ -219,7 +222,7 @@ def main():
                 values[engine]={'median':statistics.median(times),'min':min(times),'max':max(times)}
             summaries.append({'mode':mode,'workload':name,'engines':values})
     report={'recorded_at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'args':vars(args),
-        'prepared':manifest,'samples':samples,'summary':summaries,'limits':'Shared host; no speed claim outside these inputs/modes. Process startup and fixture IO excluded from matcher timing; traversal IO included from per-operation times; Node includes measured GC with explicit JIT warmup.'}
+        'prepared':manifest,'samples':samples,'summary':summaries,'limits':'Shared host; no speed claim outside these inputs/modes. Process startup and fixture IO excluded from matcher timing; traversal IO included in per-operation times; Node includes measured GC with explicit JIT warmup.'}
     path=OUT/f'{args.label}.json';path.write_text(json.dumps(report,indent=2)+'\n')
     for s in summaries:
         print(s['mode'],s['workload'],' '.join(f'{k}={v["median"]:.1f}' for k,v in s['engines'].items()))
