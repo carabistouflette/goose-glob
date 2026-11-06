@@ -1,1 +1,1 @@
-exclude = [".toolchain", ".build", "tests", "examples"];
+exclude = [".toolchain", ".build", "tests", "examples", "bench"];

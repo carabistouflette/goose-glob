@@ -22,10 +22,19 @@ fn from_fs(status: fs::Status) -> glob::Status {
         os_error: status.os_error,
     };
 }
-fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: const u8[:], excludes: const (const u8[:])[:],
+fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
+                  depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
+    let directory, opened = fs::open_root_at(root, if prefix.len == 0 { "." } else { prefix });
+    if opened.error != fs::Error.None { return from_fs(opened); }
+    let result = scan_open_directory(directory, prefix, pattern, excludes, depth, options, state, out);
+    let closed = fs::close_root(directory);
+    if result.error != glob::Error.None { return result; }
+    return from_fs(closed);
+}
+fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
          depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
     var entries: fs::Entry[>..] = [];
-    let listed = fs::list_sorted_at(root, if prefix.len == 0 { "." } else { prefix }, 1048576, 4096, entries);
+    let listed = fs::list_sorted_at(root, ".", fs::ListOptions { byte_limit: 1048576, entry_limit: 4096, adaptive: true }, entries);
     if listed.error != fs::Error.None { return from_fs(listed); }
     for entry in entries {
         if state.visited == options.max_entries { return glob::Status { error: glob::Error.LimitExceeded }; }
@@ -42,18 +51,23 @@ fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: const u8[:], exc
             if excluded { break; }
         }
         if excluded { continue; }
-        // Re-inspect every entry; directory listings are not a stable snapshot.
-        var metadata = fs::Metadata { .. };
-        let inspected = fs::metadata_at(root, path, metadata);
-        if inspected.error != fs::Error.None { return from_fs(inspected); }
-        if metadata.kind == fs::Kind.Directory {
+        // Listing types are already observations of the entries, not a snapshot.
+        // Filesystems without d_type need a no-follow metadata fallback.
+        var kind = entry.kind;
+        if kind == fs::Kind.Unknown {
+            var metadata = fs::Metadata { .. };
+            let inspected = fs::metadata_at(root, name, metadata);
+            if inspected.error != fs::Error.None { return from_fs(inspected); }
+            kind = metadata.kind;
+        }
+        if kind == fs::Kind.Directory {
             // Root entries have depth 1. Hitting the cap fails, never truncates.
             if depth == options.max_depth { return glob::Status { error: glob::Error.LimitExceeded }; }
             if path.len > MAX_QUEUED_PATH_BYTES - state.paths.len { return glob::Status { error: glob::Error.LimitExceeded }; }
             let start = state.paths.len;
             state.paths.append(path);
             state.pending.push(Pending { start: start, end: state.paths.len, depth: depth + 1 });
-        } else if metadata.kind == fs::Kind.File {
+        } else if kind == fs::Kind.File {
             let matched = glob::match_with_budget(pattern, path, options.hidden, state.budget);
             if state.budget.exhausted { return glob::Status { error: glob::Error.LimitExceeded }; }
             if matched {
@@ -82,11 +96,14 @@ fn collect_into(root_path: const u8[:], pattern: const u8[:], excludes: const (c
        options.work_limit < 1 || options.work_limit > glob::MAX_WORK || excludes.len > 64 {
         return glob::Status { error: glob::Error.InvalidOptions };
     }
-    let checked = glob::validate(pattern);
+    let inclusion, checked = glob::compile(pattern);
     if checked.error != glob::Error.None { return checked; }
+    var compiled_excludes: glob::Pattern[>..]    = [];
+    var exclude_refs:      (glob::Pattern&)[>..] = [];
     for exclude in excludes {
-        let check = glob::validate(exclude);
+        let compiled, check = glob::compile(exclude);
         if check.error != glob::Error.None { return check; }
+        let item .= compiled_excludes.push(copy(compiled)); exclude_refs.push(item);
     }
     let context, created = fs::create_context();
     if created.error != fs::Error.None { return from_fs(created); }
@@ -101,7 +118,7 @@ fn collect_into(root_path: const u8[:], pattern: const u8[:], excludes: const (c
         let item = state.pending[at];
         let prefix = str(state.paths[item.start..item.end]);
         let depth = item.depth;
-        result = scan_directory(root, prefix, pattern, excludes, depth, options, state, out);
+        result = scan_directory(root, prefix, inclusion, exclude_refs, depth, options, state, out);
         if result.error != glob::Error.None { break; }
         at++;
     }

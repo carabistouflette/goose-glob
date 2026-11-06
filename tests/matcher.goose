@@ -3,6 +3,9 @@ import glob from "..";
 import std;
 fn check(pattern: const u8[:], path: const u8[:], expected: bool) {
     let matched, status = glob::matches(pattern, path);
+    let compiled, prepared = glob::compile(pattern); assert(prepared.error == glob::Error.None);
+    let reused, reused_status = glob::matches(compiled, path);
+    assert(reused_status.error == status.error && reused == matched);
     if status.error != glob::Error.None || matched != expected { print("failed: ", pattern, " / ", path); assert(false); }
 }
 fn main() {
@@ -45,7 +48,7 @@ fn main() {
     for path in ["", "/a", "a/", "a//b", ".", "..", "a/./b", "a\0b"] {
         let _, status = glob::matches("**", path); assert(status.error == glob::Error.InvalidPath);
     }
-    let _, limited = glob::matches("*a*a*a*a*b", "aaaaaaaaaaaa", glob::Options { work_limit: 3 });
+    let _, limited = glob::matches("*a*a*a*a*b", "aaaaaaaaaaaab", glob::Options { work_limit: 3 });
     assert(limited.error == glob::Error.LimitExceeded);
     let _, invalid = glob::matches("*", "a", glob::Options { work_limit: -1 });
     assert(invalid.error == glob::Error.InvalidOptions);
@@ -74,5 +77,24 @@ fn main() {
     assert(max_fuel && max_status.error == glob::Error.None);
     let _, too_much_fuel = glob::matches("*", "a", glob::Options { work_limit: glob::MAX_WORK + 1 });
     assert(too_much_fuel.error == glob::Error.InvalidOptions);
+    let empty, rejected = glob::compile("[");
+    assert(rejected.error == glob::Error.InvalidPattern);
+    let _, unusable = glob::matches(empty, "a");
+    assert(unusable.error == glob::Error.InvalidPattern);
+    let pattern, prepared = glob::compile("*.goose"); assert(prepared.error == glob::Error.None);
+    for path in ["a.goose", "b.txt", "c.goose"] {
+        let expected, direct_status = glob::matches("*.goose", path);
+        let matched, reused_status = glob::matches(pattern, path);
+        assert(matched == expected && reused_status.error == direct_status.error);
+    }
+    var source = str("a/**/b");
+    let owned_pattern, owned_status = glob::compile(source); assert(owned_status.error == glob::Error.None);
+    source.clear();
+    let kept, kept_status = glob::matches(owned_pattern, "a/x/b"); assert(kept && kept_status.error == glob::Error.None);
+    let _, invalid_compiled_path = glob::matches(owned_pattern, "a//b"); assert(invalid_compiled_path.error == glob::Error.InvalidPath);
+    let _, invalid_compiled_options = glob::matches(owned_pattern, "a/b", glob::Options { work_limit: 0 });
+    assert(invalid_compiled_options.error == glob::Error.InvalidOptions);
+    let _, compiled_limit = glob::matches(owned_pattern, "a/x/b", glob::Options { work_limit: 1 });
+    assert(compiled_limit.error == glob::Error.LimitExceeded);
     print("matcher tests passed");
 }

@@ -16,3 +16,10 @@ Apache-2.0. Its source and third-party notices remain in the separately fetched
 its upstream license; this library does not replace those notices.
 
 The Python differential oracle uses Python's standard library only.
+
+Benchmark-only adapters use globset 0.4.21 (MIT/Unlicense), glob 0.3.4
+(MIT/Apache-2.0), doublestar 4.10.4 (MIT), picomatch 4.0.7 (MIT), and
+fast-glob 3.3.3 (MIT), plus their lockfile-recorded transitive dependencies.
+No third-party implementation is copied into the source or linked into the
+published library. See the packages' license files when redistributing benchmark
+binaries or installed package trees.

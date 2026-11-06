@@ -41,6 +41,11 @@ fn main() {
 ```
 
 `matches(pattern, path, options = Options { .. })` returns `(bool, Status)`.
+For repeated use, `compile(pattern)` returns an owned `Pattern` and `Status`;
+pass that pattern to the same `matches` function. The compiled value owns its
+bytes and can be reused without parsing the pattern again. A failed compilation
+returns an empty pattern; matching it reports `InvalidPattern`. Treat pattern
+fields as implementation details; do not mutate them.
 A non-match is `false` with `Error.None`. Invalid syntax and exceeded limits are
 errors, always returning `false`. `validate(pattern)` checks syntax independently.
 
@@ -76,7 +81,9 @@ syntax or automatic `.gitignore` loading.
 Collection never follows symlinks and skips symlinks, FIFOs, sockets, and devices.
 The absolute root and all relative paths follow goose-fs's strict no-follow path
 rules. No NUL, `.`/`..`, repeated or trailing separators are accepted (except root
-`/`). A filesystem change or permission error fails collection. This is not a
+`/`). Filesystem errors, including failures caused by concurrent changes, fail collection.
+Entry types come from directory listings when available, otherwise no-follow
+metadata. A file may disappear or change after either observation. This is not a
 snapshot, sandbox, filesystem authorization check, or operation with a deadline.
 A file can change type after inspection; re-open results with suitable no-follow
 policy if you need to read them.
@@ -108,7 +115,8 @@ Patterns: 1024 bytes. Paths: 4095 bytes. Either: at most 128 components.
 Matcher work is bounded by a fuel counter for component transitions, greedy
 matching steps and class scans; valid limits are 1–16777216. Validation and path
 splitting are bounded separately by the input caps. Fuel is an implementation
-limit, not a time unit or hard memory limit.
+limit, not a time unit or hard memory limit. Its accounting can change as matching
+gets cheaper; do not depend on exact exhaustion thresholds across versions.
 
 Collector options (default; accepted range):
 
@@ -121,7 +129,8 @@ Collector options (default; accepted range):
 - `work_limit`: 1048576; 1–16777216, shared across all inclusion/exclusion matches.
 
 At most 64 exclusions. Each directory listing has goose-fs's independent cap of
-4096 entries and 1 MiB of packed names, including entries later filtered out.
+4096 entries and 1 MiB of packed names, including entries later filtered out. Adaptive staging starts at 64 KiB; a larger
+listing may be read again while retaining the same entry/byte caps.
 Queued directory paths have a cumulative 16 MiB cap; queue records are also
 bounded by `max_entries`. Results are staged before replacing output, so old
 output, staging, backend buffers and queue storage can coexist.
@@ -131,7 +140,7 @@ output, staging, backend buffers and queue storage can coexist.
 root path validation failures in the collector are `Filesystem`.
 `os_error` is an OS errno only when supplied by goose-fs, otherwise zero.
 On a primary error, cleanup still runs; that primary error takes precedence.
-Only `matches`, `validate`, `collect`, their options/status types and documented
+Only `matches`, `validate`, `compile`, `Pattern`, `collect`, their options/status types and documented
 constants are supported API. Other declarations are implementation details.
 
 ## Development
@@ -146,6 +155,15 @@ make sanitize SANITIZER_CC=clang
 Tests cover syntax and byte semantics, shared fuel exhaustion, exact result
 bounds, hidden/excluded directories, binary filenames, symlinks, FIFOs, missing
 paths, and oversized listings. An independent Python `fnmatch`/recursive model
-checks 2088 seeded cases for the shared dialect. No performance ranking is claimed.
+checks 5104 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
 See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [design](docs/DESIGN.md), and [dependency provenance](THIRD_PARTY.md).
+
+## Measured performance
+
+On the retained seven-round Linux workload set, prepared matching has lower
+medians in 8/9 cases against Rust globset and 9/9 against Go doublestar and Node
+picomatch. Clean-tree collection has a lower median than all three collection
+adapters. Rust leads the repeated-star retry case; direct per-call matching is
+slower than Go in 6/9 cases. These are scoped workload results, not a universal
+speed ranking. See the [full medians, ranges, raw data and limits](bench/results/2026-11-06/README.md).

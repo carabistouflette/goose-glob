@@ -2,3 +2,6 @@
 .toolchain/
 __pycache__/
 *.pyc
+
+bench/node/node_modules/
+bench/rust/target/

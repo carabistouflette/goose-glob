@@ -26,4 +26,8 @@ with tempfile.TemporaryDirectory(prefix="goose-glob-") as tmp:
     huge.mkdir()
     for i in range(4097):
         (huge / str(i)).touch()
-    subprocess.run([*sys.argv[1:], str(root), str(huge)], check=True, timeout=60)
+    wide = base / "wide"
+    wide.mkdir()
+    for i in range(300):
+        (wide / ("x" * 230 + f"{i:03}.goose")).touch()
+    subprocess.run([*sys.argv[1:], str(root), str(huge), str(wide)], check=True, timeout=60)

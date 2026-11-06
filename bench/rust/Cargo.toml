@@ -1,0 +1,10 @@
+[package]
+name = "glob-competitor"
+version = "0.1.0"
+edition = "2021"
+publish = false
+[dependencies]
+globset = "=0.4.21"
+glob = "=0.3.4"
+[profile.release]
+lto = false
