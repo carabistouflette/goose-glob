@@ -13,6 +13,7 @@ import statistics
 import subprocess
 import time
 import sys
+import stat
 import corpus
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,26 +39,69 @@ def version(cmd):
     return call(cmd, capture_output=True).stdout.strip()
 
 
+ENVIRONMENT_KEYS = ('NODE_OPTIONS','GOFLAGS','GODEBUG','GOMAXPROCS','RUSTFLAGS',
+                    'CARGO_BUILD_TARGET','GOOSE_HOME','GOOSE_STDLIB','LD_PRELOAD',
+                    'LD_LIBRARY_PATH','ASAN_OPTIONS','UBSAN_OPTIONS','RUSTUP_TOOLCHAIN')
+FS_COMMIT = '0d84729aed8d72463349cac7d9439d4039ccd6d3'
+
+
+def runtime_environment():
+    return {key: os.environ.get(key) for key in ENVIRONMENT_KEYS}
+
+
+def fixture_entries(tree):
+    if tree.is_symlink(): raise SystemExit('Fixture root must not be a symlink')
+    entries = {}
+    for path in tree.rglob('*'):
+        info = path.lstat()
+        if stat.S_ISDIR(info.st_mode): kind = 'directory'
+        elif stat.S_ISREG(info.st_mode) and info.st_size == 0: kind = 'empty-file'
+        else: raise SystemExit(f'Unexpected fixture entry type/content: {path}')
+        entries[str(path.relative_to(tree))] = kind
+    return entries
+
+
+def external_inputs(goose):
+    candidates = [goose.parent/'stdlib', goose.parent.parent/'stdlib', goose.parent.parent.parent/'stdlib']
+    stdlib = Path(os.environ['GOOSE_STDLIB']).resolve() if os.environ.get('GOOSE_STDLIB') else next(p for p in candidates if p.is_dir())
+    package_home = Path(os.environ.get('GOOSE_HOME', str(Path.home()/'.goose'))).resolve()
+    roots = package_home/'pkg/github.com/carabistouflette/goose-fs'
+    fs_root = next(p for p in roots.iterdir() if p.is_dir() and
+        version(['git','-C',str(p),'rev-parse','HEAD']) == FS_COMMIT)
+    files = [fs_root/'fs.goose', fs_root/'fs.build', fs_root/'LICENSE', *(fs_root/'native').rglob('*')]
+    files += [p for p in stdlib.rglob('*') if p.suffix in ('.goose','.build','.c','.h')]
+    return stdlib, {str(p):digest(p) for p in files if p.is_file()}
+
+
 def prepare(args):
     OUT.mkdir(parents=True, exist_ok=True)
     corpus.write(OUT/'corpus.tsv')
     tree = OUT/'tree'
     tree.mkdir(exist_ok=True)
     expected = []
+    expected_entries = {}
     for group in range(8):
         for leaf in range(4):
             directory = tree/f'group{group}'/f'leaf{leaf}'
             directory.mkdir(parents=True, exist_ok=True)
+            expected_entries[f'group{group}'] = 'directory'
+            expected_entries[f'group{group}/leaf{leaf}'] = 'directory'
             for item in range(8):
                 name = f'module{item}.' + ('goose' if item % 2 == 0 else 'txt')
                 path = directory/name
+                expected_entries[str(path.relative_to(tree))] = 'empty-file'
                 if not path.exists(): path.touch()
                 if path.stat().st_size: raise SystemExit('Fixture contains unexpected data')
                 if item % 2 == 0: expected.append(str(path.relative_to(tree)))
     (OUT/'walk-expected.txt').write_text(''.join(p+'\n' for p in sorted(expected)))
+    if fixture_entries(tree) != expected_entries: raise SystemExit('Contaminated collection fixture')
     goose = Path(args.goose).resolve()
+    call([goose, 'fetch', ROOT/'bench/walk.goose'])
+    stdlib, external_before = external_inputs(goose)
+    source_before = inputs()
+    environment_before = runtime_environment()
     cc = Path(shutil.which(args.cc)).resolve()
-    call([goose, 'build', ROOT/'bench/matcher.goose', '--cc', cc, '-O2', '-o', OUT/'goose'])
+    call([goose, 'build', ROOT/'bench/matcher.goose', '--cc', cc, '--stdlib', stdlib, '-O2', '-o', OUT/'goose'])
     # Same adapter/corpus against the original public implementation.
     reference = OUT/'reference'
     reference.mkdir(exist_ok=True)
@@ -65,11 +109,11 @@ def prepare(args):
     (reference/'glob.goose').write_text(source)
     adapter = (ROOT/'bench/baseline.goose').read_text().replace('from ".."', f'from "{reference}"')
     (OUT/'baseline.goose').write_text(adapter)
-    call([goose, 'build', OUT/'baseline.goose', '--cc', cc, '-O2', '-o', OUT/'baseline'])
+    call([goose, 'build', OUT/'baseline.goose', '--cc', cc, '--stdlib', stdlib, '-O2', '-o', OUT/'baseline'])
     (reference/'walk.goose').write_text(call(['git','-C',ROOT,'show', f'{args.reference}:walk.goose'],capture_output=True).stdout)
     (OUT/'baseline-walk.goose').write_text((ROOT/'bench/walk.goose').read_text().replace('from ".."', f'from "{reference}"'))
-    call([goose, 'build', ROOT/'bench/walk.goose', '--cc', cc, '-O2', '-o', OUT/'goose-walk'])
-    call([goose, 'build', OUT/'baseline-walk.goose', '--cc', cc, '-O2', '-o', OUT/'baseline-walk'])
+    call([goose, 'build', ROOT/'bench/walk.goose', '--cc', cc, '--stdlib', stdlib, '-O2', '-o', OUT/'goose-walk'])
+    call([goose, 'build', OUT/'baseline-walk.goose', '--cc', cc, '--stdlib', stdlib, '-O2', '-o', OUT/'baseline-walk'])
     host = next(line[6:] for line in version(['rustc','-vV']).splitlines() if line.startswith('host: '))
     rust = call(['cargo','build','--locked','--release','--target',host,'--manifest-path',ROOT/'bench/rust/Cargo.toml',
                  '--target-dir',OUT/'rust','--message-format=json'],capture_output=True)
@@ -81,14 +125,18 @@ def prepare(args):
                 'rust':[executable], 'go':[str(OUT/'go-competitor')],
                 'node':[shutil.which('node'),str(ROOT/'bench/node/main.cjs')]}
     tools = {str(p):digest(p) for p in [goose,cc,Path(commands['node'][0]),Path(shutil.which('go')).resolve(),Path(shutil.which('rustc')).resolve()]}
-    manifest = {'source_hashes':inputs(), 'tools':tools, 'commands':commands,
+    if source_before != inputs() or external_before != external_inputs(goose)[1] or environment_before != runtime_environment():
+        raise SystemExit('Inputs changed during preparation; discard artifacts and prepare again')
+    manifest = {'source_hashes':source_before, 'external_sources':external_before,
+        'stdlib_directory':str(stdlib), 'goose_fs_commit':FS_COMMIT, 'fixture_entries':expected_entries,
+        'walk_expected_sha256':digest(OUT/'walk-expected.txt'), 'tools':tools, 'commands':commands,
         'binaries':{cmd[0]:digest(cmd[0]) for cmd in [*commands.values(), [str(OUT/'goose-walk')], [str(OUT/'baseline-walk')]]},
         'baseline_source_sha256':digest(reference/'glob.goose'), 'baseline_adapter_sha256':digest(OUT/'baseline.goose'),
         'corpus_sha256':digest(OUT/'corpus.tsv'), 'reference':version(['git','-C',str(ROOT),'rev-parse',args.reference]),
         'versions':{'goose':version([goose,'version']),'cc':version([cc,'--version']),
             'rust':version(['rustc','-vV']),'go':version(['go','version']),'node':version(['node','--version'])},
         'platform':platform.platform(), 'libc':platform.libc_ver(),
-        'environment':{k:os.environ.get(k) for k in ('NODE_OPTIONS','GOFLAGS','GODEBUG','GOMAXPROCS','RUSTFLAGS','CARGO_BUILD_TARGET')},
+        'environment':environment_before,
         'node_dependencies':{str(p):digest(p) for p in (ROOT/'bench/node/node_modules').rglob('*') if p.is_file()}, 'cpuinfo':Path('/proc/cpuinfo').read_text(),
         'source_head':version(['git','-C',str(ROOT),'rev-parse','HEAD']),
         'source_status':version(['git','-C',str(ROOT),'status','--short'])}
@@ -97,16 +145,14 @@ def prepare(args):
 
 
 def verify(manifest):
+    if manifest['environment'] != runtime_environment(): raise SystemExit('Prepared runtime environment changed')
     if manifest['source_hashes'] != inputs(): raise SystemExit('Prepared source changed; prepare again')
-    for group in ('tools','binaries','node_dependencies'):
+    for group in ('tools','binaries','node_dependencies','external_sources'):
         for path, sha in manifest[group].items():
             if digest(path) != sha: raise SystemExit(f'Prepared {group} changed: {path}')
     tree = OUT/'tree'
-    files = sorted(tree.rglob('*'))
-    regular = [p for p in files if p.is_file()]
-    expected = (OUT/'walk-expected.txt').read_text().splitlines()
-    if len(regular)!=256 or any(p.is_symlink() or p.stat().st_size for p in regular) or sorted(str(p.relative_to(tree)) for p in regular if p.suffix=='.goose') != expected:
-        raise SystemExit('Collection fixture changed')
+    if fixture_entries(tree) != manifest['fixture_entries']: raise SystemExit('Collection fixture changed')
+    if digest(OUT/'walk-expected.txt') != manifest['walk_expected_sha256']: raise SystemExit('Expected path manifest changed')
     if digest(OUT/'corpus.tsv') != manifest['corpus_sha256']: raise SystemExit('Corpus changed')
 
 

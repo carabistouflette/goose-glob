@@ -14,6 +14,7 @@ check:
 	"$(GOOSE)" check tests/oracle.goose
 	"$(GOOSE)" check examples/find.goose
 test:
+	python3 -m unittest discover -s tests -p 'test_*.py'
 	mkdir -p .build
 	"$(GOOSE)" run tests/matcher.goose
 	python3 tests/walk.py "$(GOOSE)" run tests/walk.goose --

@@ -14,7 +14,9 @@ python3 bench/run.py --prepared --rounds 7 --iterations 100000 \
 
 Use `--goose /path/to/pinned/goose` and `--cc gcc` as needed. Choose an available
 CPU, preferably the same core class across machines. The driver builds once,
-records source/tool/binary hashes, validates those hashes before and after timing,
+records source/tool/binary hashes (including resolved Goose stdlib and goose-fs),
+checks source snapshots across preparation and rejects changes to the recorded
+runtime environment or complete fixture entry/type manifest before/after timing,
 and runs engines sequentially in a seeded shuffled order. It does not reserve the
 host or change its governor. Preparation never runs a timed benchmark. Generated
 sources, fixtures, packages and executables stay under ignored build/cache paths.

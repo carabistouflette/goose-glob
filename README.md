@@ -140,7 +140,7 @@ output, staging, backend buffers and queue storage can coexist.
 root path validation failures in the collector are `Filesystem`.
 `os_error` is an OS errno only when supplied by goose-fs, otherwise zero.
 On a primary error, cleanup still runs; that primary error takes precedence.
-Only `matches`, `validate`, `collect`, their options/status types and documented
+Only `matches`, `validate`, `compile`, `Pattern`, `collect`, their options/status types and documented
 constants are supported API. Other declarations are implementation details.
 
 ## Development
