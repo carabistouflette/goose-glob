@@ -3,7 +3,8 @@
 ## Unreleased
 
 Owned prepared patterns for repeated matching; literal/prefix/suffix comparisons,
-linear component matching and greedy globstars; collector pattern reuse. Exact
+linear component matching and greedy globstars; collector pattern reuse, held directory roots and listing-type reuse with a
+no-follow metadata fallback when entry types are unavailable. Exact
 fuel accounting is an implementation detail and can differ from alpha.1.
 Pinned cross-language matcher and clean-tree collection benchmark harnesses.
 

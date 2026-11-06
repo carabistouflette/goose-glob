@@ -25,6 +25,8 @@ test:
 	./.build/matcher-debug
 	"$(GOOSE)" build tests/walk.goose --cc "$(CC)" --debug --no-bce -o .build/walk-debug
 	python3 tests/walk.py ./.build/walk-debug
+	"$(CC)" -shared -fPIC -Wall -Wextra -Werror tests/unknown-types.c -ldl -o .build/unknown-types.so
+	python3 tests/walk.py env LD_PRELOAD="$(abspath .build/unknown-types.so)" ./.build/walk-debug
 differential:
 	mkdir -p .build
 	"$(GOOSE)" build tests/oracle.goose --cc "$(CC)" -O2 -o .build/oracle

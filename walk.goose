@@ -23,9 +23,18 @@ fn from_fs(status: fs::Status) -> glob::Status {
     };
 }
 fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
+                  depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
+    let directory, opened = fs::open_root_at(root, if prefix.len == 0 { "." } else { prefix });
+    if opened.error != fs::Error.None { return from_fs(opened); }
+    let result = scan_open_directory(directory, prefix, pattern, excludes, depth, options, state, out);
+    let closed = fs::close_root(directory);
+    if result.error != glob::Error.None { return result; }
+    return from_fs(closed);
+}
+fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
          depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
     var entries: fs::Entry[>..] = [];
-    let listed = fs::list_sorted_at(root, if prefix.len == 0 { "." } else { prefix }, 1048576, 4096, entries);
+    let listed = fs::list_sorted_at(root, ".", 1048576, 4096, entries);
     if listed.error != fs::Error.None { return from_fs(listed); }
     for entry in entries {
         if state.visited == options.max_entries { return glob::Status { error: glob::Error.LimitExceeded }; }
@@ -42,18 +51,23 @@ fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, 
             if excluded { break; }
         }
         if excluded { continue; }
-        // Re-inspect every entry; directory listings are not a stable snapshot.
-        var metadata = fs::Metadata { .. };
-        let inspected = fs::metadata_at(root, path, metadata);
-        if inspected.error != fs::Error.None { return from_fs(inspected); }
-        if metadata.kind == fs::Kind.Directory {
+        // Listing types are already observations of the entries, not a snapshot.
+        // Filesystems without d_type need a no-follow metadata fallback.
+        var kind = entry.kind;
+        if kind == fs::Kind.Unknown {
+            var metadata = fs::Metadata { .. };
+            let inspected = fs::metadata_at(root, name, metadata);
+            if inspected.error != fs::Error.None { return from_fs(inspected); }
+            kind = metadata.kind;
+        }
+        if kind == fs::Kind.Directory {
             // Root entries have depth 1. Hitting the cap fails, never truncates.
             if depth == options.max_depth { return glob::Status { error: glob::Error.LimitExceeded }; }
             if path.len > MAX_QUEUED_PATH_BYTES - state.paths.len { return glob::Status { error: glob::Error.LimitExceeded }; }
             let start = state.paths.len;
             state.paths.append(path);
             state.pending.push(Pending { start: start, end: state.paths.len, depth: depth + 1 });
-        } else if metadata.kind == fs::Kind.File {
+        } else if kind == fs::Kind.File {
             let matched = glob::match_with_budget(pattern, path, options.hidden, state.budget);
             if state.budget.exhausted { return glob::Status { error: glob::Error.LimitExceeded }; }
             if matched {

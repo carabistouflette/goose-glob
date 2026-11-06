@@ -81,7 +81,9 @@ syntax or automatic `.gitignore` loading.
 Collection never follows symlinks and skips symlinks, FIFOs, sockets, and devices.
 The absolute root and all relative paths follow goose-fs's strict no-follow path
 rules. No NUL, `.`/`..`, repeated or trailing separators are accepted (except root
-`/`). A filesystem change or permission error fails collection. This is not a
+`/`). Filesystem errors, including failures caused by concurrent changes, fail collection.
+Entry types come from directory listings when available, otherwise no-follow
+metadata. A file may disappear or change after either observation. This is not a
 snapshot, sandbox, filesystem authorization check, or operation with a deadline.
 A file can change type after inspection; re-open results with suitable no-follow
 policy if you need to read them.
