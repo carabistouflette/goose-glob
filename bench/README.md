@@ -38,8 +38,9 @@ All engines preflight every expected result and check the timed checksum.
   because compilation costs more; per-operation times retain the actual counts.
 - `reused`: Goose `compile` and Rust/Node normal compilation happen before timing.
   Matching still validates Goose input paths and enforces work limits. Go has no
-  prepared-pattern API here and uses `Match`. Original Goose has no prepared API
-  either; its baseline remains the original direct call. Construction/owned
+  prepared-pattern API here and uses `Match`. The initial alpha has no prepared API
+  either; its baseline retains the original direct call. References with `compile`
+  use their prepared API in this mode. Construction/owned
   pattern bytes are excluded only in this explicitly reused mode.
 - `walk`: collect regular files matching `**/*.goose` from a generated warm-cache
   tree with 40 non-root directories and 256 empty regular files (128 matches).
@@ -76,9 +77,9 @@ single speed headline.
 ## Evidence
 
 `--reference FULL_COMMIT` builds the original matcher and collector using the same
-corpus and public APIs; the default is the initial alpha source. Historical old
-matching adapters stay deliberately small and separate from the adapter that uses
-the new prepared API. Reports include every sample, medians/ranges, source/tool
+corpus and public APIs; the default is the initial alpha source. References providing `compile` use the current matching adapter, including
+preparation outside reused-mode timing. The legacy adapter is used only for
+references without that API. Reports include every sample, medians/ranges, source/tool
 identities, modes, actual operation counts and the original reference revision.
 
 The driver writes `.build/bench/LABEL.json`. Read the complete per-workload table,

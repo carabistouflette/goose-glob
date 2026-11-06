@@ -30,6 +30,10 @@ cases = list(itertools.product(patterns, names))
 for _ in range(5000):
     cases.append(("/".join(rng.choices(patterns, k=rng.randint(1, 5))),
                   "/".join(rng.choices(names, k=rng.randint(1, 5)))))
+for _ in range(2000):
+    pattern = rng.choice(["", "a", "ab", ".a"]) + "*" + rng.choice(["a", "ab", "ba", "é"]) + "*" + rng.choice(["b", "ab", "ba"]) + rng.choice(["", "*"])
+    path = "".join(rng.choices(["a", "b", "é", "."], k=rng.randint(1, 32)))
+    if path not in (".", ".."): cases.append((pattern, path))
 for pattern, path in cases:
     result = subprocess.run([sys.argv[1], pattern, path], check=True, capture_output=True, timeout=5)
     expected = " ".join("1" if reference(pattern, path, hidden) else "0" for hidden in (True, False))

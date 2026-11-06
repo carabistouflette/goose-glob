@@ -10,7 +10,7 @@ enum Error { None, InvalidPattern, InvalidPath, InvalidOptions, LimitExceeded, F
 struct Status { error: Error = Error.None, os_error: i64 = 0 }
 struct Options { hidden: bool = false, work_limit: i64 = 1048576 }
 struct Span { start: i64, end: i64 }
-enum ComponentKind { General, Literal, Prefix, Suffix, Globstar }
+enum ComponentKind { General, Literal, Prefix, Suffix, Globstar, Stars }
 struct Part { start: i64, end: i64, kind: ComponentKind }
 struct Pattern { source: u8[], parts: Part[], globstars: i64 = 0 }
 struct Budget { remaining: i64, exhausted: bool = false }
@@ -19,19 +19,26 @@ fn spend(budget: Budget&) -> bool {
     if budget.remaining == 0 { budget.exhausted = true; return false; }
     budget.remaining--; return true;
 }
+let PATH_END = byte_set("/\0");
+let PATTERN_META = byte_set("/\0\\[?*");
+inline fn valid_component_span(path: const u8[:], start: i64, end: i64) -> bool {
+    let size = end - start;
+    return size > 0 && !(size == 1 && path[start] == '.') &&
+           !(size == 2 && path[start] == '.' && path[start + 1] == '.');
+}
 fn split(path: const u8[:], out: Span[>..]&) -> bool {
     out.clear();
     if path.len == 0 || path.len > MAX_PATH_BYTES { return false; }
     var start = 0;
-    for i in 0..path.len + 1 {
-        if i < path.len && path[i] == 0 { return false; }
-        if i == path.len || path[i] == '/' {
-            let part = path[start..i];
-            if part.len == 0 || part == "." || part == ".." || out.len == MAX_COMPONENTS { return false; }
+    for c, i in path {
+        if c == 0 { return false; }
+        if c == '/' {
+            if !valid_component_span(path, start, i) || out.len == MAX_COMPONENTS { return false; }
             out.push(Span { start: start, end: i }); start = i + 1;
         }
     }
-    return true;
+    if !valid_component_span(path, start, path.len) || out.len == MAX_COMPONENTS { return false; }
+    out.push(Span { start: start, end: path.len }); return true;
 }
 // Returns the closing bracket, or -1 for an empty/malformed class.
 fn class_end(pattern: const u8[:], start: i64) -> i64 {
@@ -40,52 +47,59 @@ fn class_end(pattern: const u8[:], start: i64) -> i64 {
     let first = at;
     while at < pattern.len && pattern[at] != ']' {
         // Escapes inside classes are deliberately unsupported.
-        if pattern[at] == '\\' { return -1; }
+        if pattern[at] == '\\' || pattern[at] == '/' || pattern[at] == 0 { return -1; }
         if at + 2 < pattern.len && pattern[at + 1] == '-' && pattern[at + 2] != ']' {
-            if pattern[at] > pattern[at + 2] || pattern[at + 2] == '\\' { return -1; }
+            if pattern[at] > pattern[at + 2] || pattern[at + 2] == '\\' || pattern[at + 2] == '/' || pattern[at + 2] == 0 { return -1; }
             at += 3;
         } else { at++; }
     }
     return if at < pattern.len && at > first { at } else { -1 };
 }
-fn valid_component(pattern: const u8[:]) -> bool {
-    if pattern == "**" { return true; }
+// Validate and classify directly into final metadata, without temporary spans
+// or rescanning every component to count its wildcard syntax.
+fn scan_pattern(pattern: const u8[:], out: Part[>..]&) -> bool {
+    if pattern.len == 0 || pattern.len > MAX_PATTERN_BYTES { return false; }
     var at = 0;
     while at < pattern.len {
-        let c = pattern[at];
-        if c == '\\' {
+        let start = at;
+        var stars = 0; var general = false; var globstar = false;
+        while at < pattern.len {
+            while at < pattern.len && !PATTERN_META.members[pattern[at]] { at++; }
+            if at == pattern.len || pattern[at] == '/' { break; }
+            let c = pattern[at];
+            if c == 0 { return false; }
+            if c == '\\' {
+                general = true; at++;
+                if at == pattern.len || pattern[at] == '/' || pattern[at] == 0 { return false; }
+            } else if c == '[' {
+                general = true; at = class_end(pattern, at);
+                if at < 0 { return false; }
+            } else if c == '?' { general = true; }
+            else if c == '*' {
+                stars++;
+                if at + 1 < pattern.len && pattern[at + 1] == '*' {
+                    if at != start || (at + 2 < pattern.len && pattern[at + 2] != '/') { return false; }
+                    globstar = true; at++;
+                }
+            }
             at++;
-            if at == pattern.len { return false; }
-        } else if c == '[' {
-            at = class_end(pattern, at);
-            if at < 0 { return false; }
-        } else if c == '*' && at + 1 < pattern.len && pattern[at + 1] == '*' { return false; }
+        }
+        if !valid_component_span(pattern, start, at) || out.len == MAX_COMPONENTS { return false; }
+        let kind = if globstar { ComponentKind.Globstar } else if general { ComponentKind.General }
+                   else if stars == 0 { ComponentKind.Literal }
+                   else if stars == 1 && pattern[start] == '*' { ComponentKind.Suffix }
+                   else if stars == 1 && pattern[at - 1] == '*' { ComponentKind.Prefix }
+                   else { ComponentKind.Stars };
+        out.push(Part { start: start, end: at, kind: kind });
+        if at == pattern.len { return true; }
         at++;
     }
-    return true;
+    return false;
 }
-fn component_kind(pattern: const u8[:]) -> ComponentKind {
-    if pattern == "**" { return ComponentKind.Globstar; }
-    var stars = 0;
-    for c in pattern {
-        if c == '?' || c == '[' || c == '\\' { return ComponentKind.General; }
-        if c == '*' { stars++; }
-    }
-    if stars == 0 { return ComponentKind.Literal; }
-    if stars == 1 && pattern[0] == '*' { return ComponentKind.Suffix; }
-    if stars == 1 && pattern[pattern.len - 1] == '*' { return ComponentKind.Prefix; }
-    return ComponentKind.General;
-}
-fn parse_pattern(pattern: const u8[:], out: Part[>..]&) -> bool {
+inline fn parse_pattern(pattern: const u8[:], out: Part[>..]&) -> bool {
     out.clear();
-    var spans: Span[>..] = [];
-    if pattern.len > MAX_PATTERN_BYTES || !split(pattern, spans) { return false; }
-    for span in spans {
-        let part = pattern[span.start..span.end];
-        if !valid_component(part) { out.clear(); return false; }
-        out.push(Part { start: span.start, end: span.end, kind: component_kind(part) });
-    }
-    return true;
+    if scan_pattern(pattern, out) { return true; }
+    out.clear(); return false;
 }
 fn validate(pattern: const u8[:]) -> Status {
     var parts: Part[>..] = [];
@@ -99,21 +113,25 @@ fn compile(pattern: const u8[:]) -> Pattern, Status {
     if !parse_pattern(pattern, parts) { return Pattern { .. }, Status { error: Error.InvalidPattern }; }
     return Pattern { source: owned(pattern), parts: owned(parts), globstars: count_globstars(parts) }, Status { .. };
 }
-fn class_matches(pattern: const u8[:], start: i64, end: i64, c: u8) -> bool {
+// Pattern syntax is already validated: decode the class once while matching.
+fn match_class(pattern: const u8[:], start: i64, c: u8, budget: Budget&) -> i64, bool {
     var at = start + 1;
     let negate = pattern[at] == '!' || pattern[at] == '^';
     if negate { at++; }
     var found = false;
-    while at < end {
-        if at + 2 < end && pattern[at + 1] == '-' {
+    while at < pattern.len && pattern[at] != ']' {
+        if at + 2 < pattern.len && pattern[at + 1] == '-' && pattern[at + 2] != ']' {
+            if budget.remaining < 3 { budget.exhausted = true; return at, false; }
+            budget.remaining -= 3;
             if c >= pattern[at] && c <= pattern[at + 2] { found = true; }
             at += 3;
         } else {
+            if !spend(budget) { return at, false; }
             if c == pattern[at] { found = true; }
             at++;
         }
     }
-    return if negate { !found } else { found };
+    return at, if negate { !found } else { found };
 }
 // Greedy component matching with one saved star. No recursive backtracking.
 fn component_matches(pattern: const u8[:], name: const u8[:], hidden: bool, budget: Budget&) -> bool {
@@ -132,11 +150,9 @@ fn component_matches(pattern: const u8[:], name: const u8[:], hidden: bool, budg
             if c == '?' { matched = true; }
             else if c == '\\' { matched = pattern[p + 1] == name[n]; next = p + 2; }
             else if c == '[' {
-                let end = class_end(pattern, p);
-                // Charge the complete class scan, including ranges.
-                if budget.remaining < end - p { budget.exhausted = true; return false; }
-                budget.remaining -= end - p;
-                matched = class_matches(pattern, p, end, name[n]); next = end + 1;
+                let end, hit = match_class(pattern, p, name[n], budget);
+                if budget.exhausted { return false; }
+                matched = hit; next = end + 1;
             } else { matched = c == name[n]; }
         }
         if matched { p = next; n++; }
@@ -146,10 +162,64 @@ fn component_matches(pattern: const u8[:], name: const u8[:], hidden: bool, budg
     if p < pattern.len && pattern[p] == '*' { p++; }
     return p == pattern.len;
 }
+// Search only as many candidate bytes as the remaining work budget permits.
+// Count actual prefix comparisons, so cheap first-byte misses do not consume
+// the worst-case length of a large literal chunk.
+fn find_chunk(source: const u8[:], chunk: const u8[:], budget: Budget&) -> i64 {
+    let positions = source.len - chunk.len + 1;
+    var at = 0;
+    while at < positions {
+        let allowed = min(positions - at, budget.remaining);
+        if allowed == 0 { budget.exhausted = true; return -1; }
+        let found = position(source[at..at + allowed], chunk[0]);
+        budget.remaining -= if found < 0 { allowed } else { found + 1 };
+        if found < 0 {
+            if allowed < positions - at { budget.exhausted = true; }
+            return -1;
+        }
+        at += found;
+        var matched = 1;
+        while matched < chunk.len {
+            if !spend(budget) { return -1; }
+            if source[at + matched] != chunk[matched] { break; }
+            matched++;
+        }
+        if matched == chunk.len { return at; }
+        at++;
+    }
+    return -1;
+}
+// Literal-only star patterns search whole chunks rather than retrying one byte
+// at a time. The search window and each comparison are bounded by fuel.
+fn star_matches(pattern: const u8[:], name: const u8[:], budget: Budget&) -> bool {
+    if pattern[pattern.len - 1] != '*' && name[name.len - 1] != pattern[pattern.len - 1] { return false; }
+    var p = 0; var n = 0;
+    while p < pattern.len {
+        if pattern[p] == '*' { p++; continue; }
+        let start = p;
+        while p < pattern.len && pattern[p] != '*' { p++; }
+        let chunk = pattern[start..p];
+        if chunk.len > name.len - n { return false; }
+        if start == 0 || p == pattern.len {
+            if budget.remaining < chunk.len { budget.exhausted = true; return false; }
+            budget.remaining -= chunk.len;
+            if start == 0 {
+                if !starts_with(name, chunk) { return false; }
+                n = chunk.len;
+            } else { return ends_with(name[n..], chunk); }
+        } else {
+            let found = find_chunk(name[n..], chunk, budget);
+            if found < 0 { return false; }
+            n += found + chunk.len;
+        }
+    }
+    return true;
+}
 // Literal components and single edge-stars use bounded slice comparisons.
 fn part_matches(pattern: const u8[:], name: const u8[:], kind: ComponentKind, hidden: bool, budget: Budget&) -> bool {
     if kind == ComponentKind.General { return component_matches(pattern, name, hidden, budget); }
     if !hidden && name[0] == '.' && pattern[0] != '.' { return false; }
+    if kind == ComponentKind.Stars { return star_matches(pattern, name, budget); }
     let work = if pattern.len < name.len { pattern.len } else { name.len };
     if budget.remaining < work { budget.exhausted = true; return false; }
     budget.remaining -= work;
@@ -214,7 +284,27 @@ fn match_with_budget(pattern: Pattern&, path: const u8[:], hidden: bool, budget:
     return match_parts(pattern.source, path, pattern.parts, names, pattern.globstars, hidden, budget);
 }
 fn valid_options(options: Options) -> bool { options.work_limit >= 1 && options.work_limit <= MAX_WORK }
-fn match_result(pattern: const u8[:], parts: Part[:], globstars: i64, path: const u8[:], options: Options) -> bool, Status {
+inline fn match_result(pattern: const u8[:], parts: Part[:], globstars: i64, path: const u8[:], options: Options) -> bool, Status {
+    // A validated all-literal pattern equal to its candidate proves candidate
+    // validity too. Mismatches still validate the complete candidate path.
+    if globstars == 0 && options.work_limit >= pattern.len + parts.len {
+        var literal = true;
+        for part in parts { if part.kind != ComponentKind.Literal { literal = false; break; } }
+        if literal {
+            if pattern == path { return true, Status { .. }; }
+            var checked: Span[>..] = [];
+            if !split(path, checked) { return false, Status { error: Error.InvalidPath }; }
+            return false, Status { .. };
+        }
+    }
+    // The common one-component case needs no temporary path-span array.
+    if parts.len == 1 && globstars == 0 && path.len > 0 && path.len <= MAX_PATH_BYTES && find_any(path, PATH_END) < 0 {
+        if !valid_component_span(path, 0, path.len) { return false, Status { error: Error.InvalidPath }; }
+        var budget = Budget { remaining: options.work_limit };
+        let part = parts[0];
+        let matched = spend(budget) && part_matches(pattern[part.start..part.end], path, part.kind, options.hidden, budget);
+        return matched && !budget.exhausted, Status { error: if budget.exhausted { Error.LimitExceeded } else { Error.None } };
+    }
     var names: Span[>..] = [];
     if !split(path, names) { return false, Status { error: Error.InvalidPath }; }
     var budget = Budget { remaining: options.work_limit };
@@ -222,13 +312,13 @@ fn match_result(pattern: const u8[:], parts: Part[:], globstars: i64, path: cons
     if budget.exhausted { return false, Status { error: Error.LimitExceeded }; }
     return matched, Status { .. };
 }
-fn matches(pattern: const u8[:], path: const u8[:], options: Options = Options { .. }) -> bool, Status {
+inline fn matches(pattern: const u8[:], path: const u8[:], options: Options = Options { .. }) -> bool, Status {
     if !valid_options(options) { return false, Status { error: Error.InvalidOptions }; }
     var parts: Part[>..] = [];
     if !parse_pattern(pattern, parts) { return false, Status { error: Error.InvalidPattern }; }
     return match_result(pattern, parts, count_globstars(parts), path, options);
 }
-fn matches(pattern: Pattern&, path: const u8[:], options: Options = Options { .. }) -> bool, Status {
+inline fn matches(pattern: Pattern&, path: const u8[:], options: Options = Options { .. }) -> bool, Status {
     if !valid_options(options) { return false, Status { error: Error.InvalidOptions }; }
     if pattern.parts.len == 0 { return false, Status { error: Error.InvalidPattern }; }
     return match_result(pattern.source, pattern.parts, pattern.globstars, path, options);

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-alpha.3
+
+Fused pattern validation/classification; literal-run scanning, whole-literal and
+single-component fast paths; bounded chunk searching for literal-only multi-star
+patterns; single-pass class matching. Syntax, ownership and input caps remain.
+Expanded malformed-input, bounded-search and multi-star compatibility tests.
+
 ## 0.1.0-alpha.2
 
 Owned prepared patterns for repeated matching; literal/prefix/suffix comparisons,

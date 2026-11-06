@@ -155,15 +155,17 @@ make sanitize SANITIZER_CC=clang
 Tests cover syntax and byte semantics, shared fuel exhaustion, exact result
 bounds, hidden/excluded directories, binary filenames, symlinks, FIFOs, missing
 paths, and oversized listings. An independent Python `fnmatch`/recursive model
-checks 5104 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
+checks 7081 seeded cases in both hidden modes and through both APIs for the shared dialect. Reproducible comparisons, their scope and raw results are described in [bench/README.md](bench/README.md).
 See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [design](docs/DESIGN.md), and [dependency provenance](THIRD_PARTY.md).
 
 ## Measured performance
 
-On the retained seven-round Linux workload set, prepared matching has lower
-medians in 8/9 cases against Rust globset and 9/9 against Go doublestar and Node
-picomatch. Clean-tree collection has a lower median than all three collection
-adapters. Rust leads the repeated-star retry case; direct per-call matching is
-slower than Go in 6/9 cases. These are scoped workload results, not a universal
-speed ranking. See the [full medians, ranges, raw data and limits](bench/results/2026-11-06/README.md).
+In the retained seven-round Linux workload set, matching has lower medians than
+all three pinned alternatives in every case: 9/9 direct-call and 9/9 prepared
+workloads against Rust globset, Go doublestar and Node picomatch. Clean-tree
+collection also has a lower median than the three collection adapters. Direct
+Rust/Node calls include compilation; prepared mode excludes it for all supporting
+APIs. These results are workload-specific and do not establish a universal speed
+ranking. See [all medians, ranges, raw samples and limits](bench/results/2026-11-07/README.md)
+and the [earlier alpha.2 report](bench/results/2026-11-06/README.md).
