@@ -105,7 +105,9 @@ trees. Outcomes are computed with the independent Python component oracle from
 `corpus.py`. Natural hit ratios, including entirely negative workloads, remain.
 The frozen paths suffice to rerun without checking out or building those projects.
 This is a separate in-project validation set, not blind external validation.
-No library implementation changes are made in response to these measurements.
+The original alpha.3 experiment made no implementation changes in response to
+these measurements. Alpha.4 treats this set as regression/tuning data and uses
+the fresh validation set described below.
 
 ```sh
 python3 bench/run.py --goose /absolute/pinned/goose --prepare-only
@@ -128,3 +130,38 @@ the last task. These are warm-cache generated trees, not real storage benchmarks
 The command writes raw samples and medians/ranges to `.build/bench/LABEL/raw.json`;
 existing experiment directories are never overwritten. Shared-host timing has no
 CI threshold and cannot establish a universal language or library ranking.
+
+## Alpha.4 candidate qualification
+
+The earlier independent corpus is now regression/tuning data. The fresh
+[`validation-alpha4.json`](validation-alpha4.json) was committed at `d5b86d1`
+before optimization, with SHA-256
+`0197483c7e8058d056dfff86ba5d0ea6616bdfbac4bb206a171b950fcf552afa`.
+It selects additional compiler paths disjoint from the earlier selection, plus
+pinned goose-fs and goose-crypto paths, and twelve patterns. Collection geometry
+is also frozen: wide (112 directories, 1008 files, 336 matches) and deep
+(10 branches, 28 nested levels each, 840 files, 560 matches). Duplicate extensions
+use distinct indexed names in these fresh trees. Historical default tree names
+and geometry stay unchanged and are protected by a manifest regression.
+
+Freeze the candidate before examining this set's timing results. Record changes
+needed for correctness or harness issues; never silently retune against it while
+calling it unseen validation. Preparation and heavy correctness/profiling jobs
+finish before retained timings. Use sequential shuffled rounds on one CPU and
+report uncontrolled host activity and all slower results.
+
+```sh
+python3 bench/run.py --goose /absolute/pinned/goose \
+  --reference 1c2cb05988a253c8f9c4922659dd4a669e0b80cf --prepare-only
+python3 bench/independent.py --baseline --label alpha4-regression
+python3 bench/independent.py --baseline --corpus bench/validation-alpha4.json \
+  --label alpha4-validation
+```
+
+`--baseline` includes the prepared reference binary from that exact alpha.3
+runtime snapshot. All engines receive identical call counts and path order
+within each mode: 8192 one-shot, 65536 reused, and 32 collection calls by default.
+The raw report includes the selected corpus, its full hash, exact fixture maps,
+expected paths, tools, binaries and dependencies. Median/min/max and checksums
+are retained for every engine and round. Compiler/library policies still differ;
+this is a workload comparison rather than a universal language ranking.

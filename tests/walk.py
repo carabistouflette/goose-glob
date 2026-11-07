@@ -30,4 +30,13 @@ with tempfile.TemporaryDirectory(prefix="goose-glob-") as tmp:
     wide.mkdir()
     for i in range(300):
         (wide / ("x" * 230 + f"{i:03}.goose")).touch()
-    subprocess.run([*sys.argv[1:], str(root), str(huge), str(wide)], check=True, timeout=60)
+    edges = []
+    for packed_bytes in (4096, 4097):
+        edge = base/str(packed_bytes)
+        edge.mkdir()
+        # Packed entries use one kind byte, the name, and a NUL terminator.
+        for i in range(16):
+            width = 247 if packed_bytes == 4097 and i == 0 else 246
+            (edge/('x'*width + f'{i:02}.goose')).touch()
+        edges.append(str(edge))
+    subprocess.run([*sys.argv[1:], str(root), str(huge), str(wide), *edges], check=True, timeout=60)

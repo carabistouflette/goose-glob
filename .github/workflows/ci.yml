@@ -32,3 +32,6 @@ jobs:
       - name: Validate frozen corpus and larger collection fixtures (smoke)
         if: matrix.cc == 'gcc'
         run: python3 bench/independent.py --rounds 1 --iterations 64 --compile-iterations 64 --walk-iterations 1 --cpu 0 --label ci-independent
+      - name: Validate fresh alpha.4 corpus and reference adapter (smoke)
+        if: matrix.cc == 'gcc'
+        run: python3 bench/independent.py --baseline --corpus bench/validation-alpha4.json --rounds 1 --iterations 64 --compile-iterations 64 --walk-iterations 1 --cpu 0 --label ci-alpha4

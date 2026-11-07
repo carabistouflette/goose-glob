@@ -34,7 +34,12 @@ fn scan_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, 
 fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Pattern&, excludes: (glob::Pattern&)[:],
          depth: i64, options: Options, state: State&, out: u8[][>..]&) -> glob::Status {
     var entries: fs::Entry[>..] = [];
-    let listed = fs::list_sorted_at(root, ".", fs::ListOptions { byte_limit: 1048576, entry_limit: 4096, adaptive: true }, entries);
+    var listed = fs::list_sorted_at(root, ".", fs::ListOptions { byte_limit: 4096, entry_limit: 4096, .. }, entries);
+    if listed.error == fs::Error.LimitExceeded {
+        // Small directories avoid clearing 64 KiB; retry larger listings with
+        // the original byte/entry caps and the backend's adaptive staging.
+        listed = fs::list_sorted_at(root, ".", fs::ListOptions { byte_limit: 1048576, entry_limit: 4096, adaptive: true }, entries);
+    }
     if listed.error != fs::Error.None { return from_fs(listed); }
     for entry in entries {
         if state.visited == options.max_entries { return glob::Status { error: glob::Error.LimitExceeded }; }
@@ -46,7 +51,7 @@ fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Patte
         if !glob::split(path, parts) { return glob::Status { error: glob::Error.LimitExceeded }; }
         var excluded = false;
         for exclude in excludes {
-            if glob::match_with_budget(exclude, path, true, state.budget) { excluded = true; }
+            if glob::match_with_budget(exclude, path, parts, true, state.budget) { excluded = true; }
             if state.budget.exhausted { return glob::Status { error: glob::Error.LimitExceeded }; }
             if excluded { break; }
         }
@@ -68,7 +73,7 @@ fn scan_open_directory(root: fs::Root, prefix: const u8[:], pattern: glob::Patte
             state.paths.append(path);
             state.pending.push(Pending { start: start, end: state.paths.len, depth: depth + 1 });
         } else if kind == fs::Kind.File {
-            let matched = glob::match_with_budget(pattern, path, options.hidden, state.budget);
+            let matched = glob::match_with_budget(pattern, path, parts, options.hidden, state.budget);
             if state.budget.exhausted { return glob::Status { error: glob::Error.LimitExceeded }; }
             if matched {
                 if out.len == options.max_results || path.len > options.max_result_bytes - state.result_bytes {
