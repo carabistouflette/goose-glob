@@ -164,6 +164,14 @@ also verifies the supported APIs against candidate checkouts and public release 
 See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 [design](docs/DESIGN.md), and [dependency provenance](THIRD_PARTY.md).
 
+## Consumer feedback
+
+[Share usage feedback or a compatibility issue](https://github.com/carabistouflette/goose-glob/issues/new?template=consumer-feedback.md).
+Reports from consumers beyond Honk are welcome: include the library/compiler
+revision, environment and a minimal example for problems. Successful integrations
+and API friction are useful feedback too. Public project links are optional.
+For suspected vulnerabilities, use the private channel in [SECURITY.md](SECURITY.md).
+
 ## Measured performance
 
 The [alpha.5 parser qualification](bench/results/2026-11-07-alpha5/README.md)
