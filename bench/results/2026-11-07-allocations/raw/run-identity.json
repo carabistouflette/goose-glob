@@ -1,0 +1,11 @@
+{
+  "sha256": {
+    "baseline": "7cc409180fa423cb35f077d6ff7e86c06184bf97c2ec3d7e3f7a0ed2b1c146b1",
+    "instrumented": "bbcaeadef4e5c3ae1fa111d2839dcf8ab8b243fd46ad2094c3e6055f38cb3b4f",
+    "corpus": "803ea568decbbcc994167dc6d0e22ae8afc7dd9355c51da99457f5b0a3574593"
+  },
+  "driver_sha256": "4fe530ae5fa8954bfb5c1e04a560ec8de9a5e05c297c018a72a6d726854441a1",
+  "cpu": 2,
+  "valgrind": "valgrind-3.25.1",
+  "limits": "Three earlier tuning groups; whole-process malloc-family counts include startup and IO. Temporary-record counters cover only the selected loop, after preparation. Mapping/commit events, native stack frames, whole RSS and latency are outside this profile."
+}

@@ -1,0 +1,19 @@
+{
+  "release": "v0.1.0-alpha.5",
+  "runtime_revision": "02d7422d07469f1c483067a4d011698afbafbcc2",
+  "baseline_build_source": "d6d6938baea52b47becbf0f32c50a474c2820fea",
+  "instrumented_source_revision": "18540ad38efc2e4ed44fe4da0cb783bcf3f07b5e",
+  "runtime_sha256": {
+    "glob.goose": "6ee075e290c19781bcdcdba98a66b69756e5a6e4058327d1d3ebc1b6886e5f6e",
+    "walk.goose": "bc5dd9b6beffcf07e058a7d0f2223105c8a7a46519b64bba29717039e0b834bf"
+  },
+  "compiler": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "baseline_manifest": "../2026-11-07-prefix-experiment/baseline-prepared.json",
+  "instrumentation": "Private generated-C counters; one Part store site and three Span store sites. Pinned emitted layout: Part=17 and Span=16 bytes. Counters reset after preflight/compilation, before the selected loop. Instrumented timings are discarded.",
+  "helpers_sha256": {
+    "counters.h": "06228ff3eb551f4686de03006500bcb5311554b1b2c7dfa2c929a6612a6a091e",
+    "profile-cc.py": "5eb047733afc07ef9363d86dd790c3f34e91f801be3a693afe76529bc69392c5",
+    "prepare.py": "7eaac90b6642e252b85a05343e19bd01a030dcfc7c4154f7049f4d34c3af19c4",
+    "run.py": "4fe530ae5fa8954bfb5c1e04a560ec8de9a5e05c297c018a72a6d726854441a1"
+  }
+}

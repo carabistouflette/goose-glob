@@ -1,0 +1,98 @@
+[
+  {
+    "group": "compiler_3",
+    "mode": "oneshot",
+    "calls": 49152,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "compiler_3",
+    "mode": "oneshot",
+    "calls": 98304,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "compiler_3",
+    "mode": "reused",
+    "calls": 49152,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "compiler_3",
+    "mode": "reused",
+    "calls": 98304,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "honk_1",
+    "mode": "oneshot",
+    "calls": 16320,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "honk_1",
+    "mode": "oneshot",
+    "calls": 32640,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "honk_1",
+    "mode": "reused",
+    "calls": 16320,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "honk_1",
+    "mode": "reused",
+    "calls": 32640,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "glob_4",
+    "mode": "oneshot",
+    "calls": 3136,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "glob_4",
+    "mode": "oneshot",
+    "calls": 6272,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "glob_4",
+    "mode": "reused",
+    "calls": 3136,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  },
+  {
+    "group": "glob_4",
+    "mode": "reused",
+    "calls": 6272,
+    "blocks": 12,
+    "bytes": 72648,
+    "live_at_end": 66008
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "original_c_sha256": "23e668d2f08542d833199e5d98cab338404abd8768bfdee39e1961da87d11271",
+  "instrumented_c_sha256": "ff6a283e5e86efc96ede73f3928997936bc05abd9c41c0c333027eb95f080efa",
+  "store_sites": {
+    "Part": 1,
+    "Span": 3
+  }
+}

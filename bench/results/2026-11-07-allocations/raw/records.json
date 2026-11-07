@@ -1,0 +1,194 @@
+[
+  {
+    "group": "compiler_3",
+    "mode": "oneshot",
+    "calls": 49152,
+    "parts": 147456,
+    "part_bytes": 2506752,
+    "spans": 150464,
+    "span_bytes": 2407424,
+    "maximum_record_payload_per_call": 147,
+    "per_call": {
+      "parts": 3.0,
+      "part_bytes": 51.0,
+      "spans": 3.0611979166666665,
+      "span_bytes": 48.979166666666664
+    }
+  },
+  {
+    "group": "compiler_3",
+    "mode": "oneshot",
+    "calls": 98304,
+    "parts": 294912,
+    "part_bytes": 5013504,
+    "spans": 300928,
+    "span_bytes": 4814848,
+    "maximum_record_payload_per_call": 147,
+    "per_call": {
+      "parts": 3.0,
+      "part_bytes": 51.0,
+      "spans": 3.0611979166666665,
+      "span_bytes": 48.979166666666664
+    }
+  },
+  {
+    "group": "compiler_3",
+    "mode": "reused",
+    "calls": 49152,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 23296,
+    "span_bytes": 372736,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 0.4739583333333333,
+      "span_bytes": 7.583333333333333
+    }
+  },
+  {
+    "group": "compiler_3",
+    "mode": "reused",
+    "calls": 98304,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 46592,
+    "span_bytes": 745472,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 0.4739583333333333,
+      "span_bytes": 7.583333333333333
+    }
+  },
+  {
+    "group": "honk_1",
+    "mode": "oneshot",
+    "calls": 16320,
+    "parts": 32640,
+    "part_bytes": 554880,
+    "spans": 57088,
+    "span_bytes": 913408,
+    "maximum_record_payload_per_call": 146,
+    "per_call": {
+      "parts": 2.0,
+      "part_bytes": 34.0,
+      "spans": 3.4980392156862745,
+      "span_bytes": 55.96862745098039
+    }
+  },
+  {
+    "group": "honk_1",
+    "mode": "oneshot",
+    "calls": 32640,
+    "parts": 65280,
+    "part_bytes": 1109760,
+    "spans": 114176,
+    "span_bytes": 1826816,
+    "maximum_record_payload_per_call": 146,
+    "per_call": {
+      "parts": 2.0,
+      "part_bytes": 34.0,
+      "spans": 3.4980392156862745,
+      "span_bytes": 55.96862745098039
+    }
+  },
+  {
+    "group": "honk_1",
+    "mode": "reused",
+    "calls": 16320,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 18112,
+    "span_bytes": 289792,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 1.1098039215686275,
+      "span_bytes": 17.75686274509804
+    }
+  },
+  {
+    "group": "honk_1",
+    "mode": "reused",
+    "calls": 32640,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 36224,
+    "span_bytes": 579584,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 1.1098039215686275,
+      "span_bytes": 17.75686274509804
+    }
+  },
+  {
+    "group": "glob_4",
+    "mode": "oneshot",
+    "calls": 3136,
+    "parts": 6272,
+    "part_bytes": 106624,
+    "spans": 7488,
+    "span_bytes": 119808,
+    "maximum_record_payload_per_call": 98,
+    "per_call": {
+      "parts": 2.0,
+      "part_bytes": 34.0,
+      "spans": 2.3877551020408165,
+      "span_bytes": 38.204081632653065
+    }
+  },
+  {
+    "group": "glob_4",
+    "mode": "oneshot",
+    "calls": 6272,
+    "parts": 12544,
+    "part_bytes": 213248,
+    "spans": 14976,
+    "span_bytes": 239616,
+    "maximum_record_payload_per_call": 98,
+    "per_call": {
+      "parts": 2.0,
+      "part_bytes": 34.0,
+      "spans": 2.3877551020408165,
+      "span_bytes": 38.204081632653065
+    }
+  },
+  {
+    "group": "glob_4",
+    "mode": "reused",
+    "calls": 3136,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 7488,
+    "span_bytes": 119808,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 2.3877551020408165,
+      "span_bytes": 38.204081632653065
+    }
+  },
+  {
+    "group": "glob_4",
+    "mode": "reused",
+    "calls": 6272,
+    "parts": 0,
+    "part_bytes": 0,
+    "spans": 14976,
+    "span_bytes": 239616,
+    "maximum_record_payload_per_call": 64,
+    "per_call": {
+      "parts": 0.0,
+      "part_bytes": 0.0,
+      "spans": 2.3877551020408165,
+      "span_bytes": 38.204081632653065
+    }
+  }
+]
