@@ -1,0 +1,16 @@
+{
+  "baseline_release": "v0.1.0-alpha.5",
+  "baseline_revision": "02d7422d07469f1c483067a4d011698afbafbcc2",
+  "base_runtime_sha256": "6ee075e290c19781bcdcdba98a66b69756e5a6e4058327d1d3ebc1b6886e5f6e",
+  "candidate_runtime_sha256": "64608af543bc1ef877f81b7305c2de85c4f43f4e9b8f315efce4076c416dc7a1",
+  "binaries": {
+    "before": "7cc409180fa423cb35f077d6ff7e86c06184bf97c2ec3d7e3f7a0ed2b1c146b1",
+    "shared": "e9885c2edca8a7ed7dc9d9b267cee35fd2f399031c16bd715cff1718739b8619"
+  },
+  "corpus_sha256": "803ea568decbbcc994167dc6d0e22ae8afc7dd9355c51da99457f5b0a3574593",
+  "compiler": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "rounds": 7,
+  "operations_per_group": 131072,
+  "cpu": 2,
+  "limits": "Exploratory tuning comparison only: shared host, warm caches, 12 earlier groups; no alternative-library or collection measurements. Candidate patch retained. Fresh inputs unmeasured."
+}

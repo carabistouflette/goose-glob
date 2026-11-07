@@ -1,0 +1,30 @@
+{
+  "initial": {
+    "oneshot": {
+      "lower_medians": 5,
+      "cells": 12,
+      "minimum_change_percent": -8.947161924873104,
+      "maximum_change_percent": 6.798467425332855
+    },
+    "reused": {
+      "lower_medians": 1,
+      "cells": 12,
+      "minimum_change_percent": -3.173431356065659,
+      "maximum_change_percent": 5.613279593095255
+    }
+  },
+  "repeat": {
+    "oneshot": {
+      "lower_medians": 6,
+      "cells": 12,
+      "minimum_change_percent": -8.896318397466407,
+      "maximum_change_percent": 5.8174798635335145
+    },
+    "reused": {
+      "lower_medians": 6,
+      "cells": 12,
+      "minimum_change_percent": -3.529404014258808,
+      "maximum_change_percent": 3.1132226902512716
+    }
+  }
+}
