@@ -177,3 +177,14 @@ Prepare with reference `2022a04e1847490c9c76af91e1e5c01a3c6e3cc0`, then run
 `bench/independent.py --baseline --corpus bench/validation-alpha5.json --label alpha5-validation`.
 The earlier independent corpus is regression/tuning data. All counts, guards and
 shared-host limits from the alpha.4 method apply.
+
+Retained [alpha.5 qualification](results/2026-11-07-alpha5/README.md) includes
+both sets and all losses. Reproduce after preparing the exact reference:
+
+```sh
+python3 bench/run.py --goose /absolute/pinned/goose \
+  --reference 2022a04e1847490c9c76af91e1e5c01a3c6e3cc0 --prepare-only
+python3 bench/independent.py --baseline --rounds 7 --cpu 2 --label alpha5-regression
+python3 bench/independent.py --baseline --rounds 7 --cpu 2 \
+  --corpus bench/validation-alpha5.json --label alpha5-validation
+```
