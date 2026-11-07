@@ -93,3 +93,37 @@ Primary API references: [globset](https://docs.rs/globset/0.4.21/globset/),
 [doublestar](https://pkg.go.dev/github.com/bmatcuk/doublestar/v4@v4.10.4),
 [picomatch](https://github.com/micromatch/picomatch/tree/4.0.7), and
 [fast-glob](https://github.com/mrmlnc/fast-glob/tree/3.3.3).
+
+## Separate frozen validation set
+
+`independent-corpus.json` freezes 1,072 tracked paths from exact compiler, Honk
+and goose-glob Git trees and twelve patterns before measurement. Each source
+records its full revision and SHA-256 of `git ls-tree -rz --name-only REV`.
+Eligible paths are printable ASCII, at most 4095 bytes and 128 components;
+the first 768 ranked by SHA-256 of the path are retained, or all paths in smaller
+trees. Outcomes are computed with the independent Python component oracle from
+`corpus.py`. Natural hit ratios, including entirely negative workloads, remain.
+The frozen paths suffice to rerun without checking out or building those projects.
+This is a separate in-project validation set, not blind external validation.
+No library implementation changes are made in response to these measurements.
+
+```sh
+python3 bench/run.py --goose /absolute/pinned/goose --prepare-only
+python3 bench/independent.py --rounds 7 --cpu 2 --label independent
+```
+
+The second command reuses the exact prepared adapters, locked dependencies and
+before/after source, tool, dependency and binary checks. It adds a frozen corpus
+hash and complete fixture manifests. It checks every result before timing and
+validates dynamic checksums for each natural hit ratio and iteration count.
+One-shot Rust/Node use 2048 iterations by default; Goose/Go and all reused modes
+use 65536. Node keeps the same explicit JIT warmup as the retained harness.
+
+Collection uses the normal APIs and `**/*.goose`, with complete sorted path-set
+preflight, on separate clean empty-file trees: wide (192 directories, 1536 files,
+576 hits) and deep (12 branches, 24 nested levels each, 576 files, 288 hits).
+The fixture maps and expected manifests are checked before every task and after
+the last task. These are warm-cache generated trees, not real storage benchmarks.
+The command writes raw samples and medians/ranges to `.build/bench/LABEL/raw.json`;
+existing experiment directories are never overwritten. Shared-host timing has no
+CI threshold and cannot establish a universal language or library ranking.

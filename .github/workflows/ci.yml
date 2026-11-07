@@ -29,3 +29,6 @@ jobs:
       - name: Validate competitive adapters (smoke, not performance qualification)
         if: matrix.cc == 'gcc'
         run: python3 bench/run.py --rounds 1 --iterations 64 --compile-iterations 64 --walk-iterations 1 --cpu 0 --label ci-smoke
+      - name: Validate frozen corpus and larger collection fixtures (smoke)
+        if: matrix.cc == 'gcc'
+        run: python3 bench/independent.py --rounds 1 --iterations 64 --compile-iterations 64 --walk-iterations 1 --cpu 0 --label ci-independent
