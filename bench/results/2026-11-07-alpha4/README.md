@@ -16,7 +16,7 @@ Own heavy correctness/build/profiling jobs finished before retained timings. Oth
 
 ## Summary
 
-| Set | Samples | Lower medians vs alternatives | Fastest workload/mode cells | Lower medians vs alpha.3 |
+| Set | Samples | Lower medians vs alternatives | Lower than all three alternatives | Lower medians vs alpha.3 |
 | --- | ---: | ---: | ---: | ---: |
 | Legacy tuning corpus | 665 | 57/57 | 19/19 | 6/19 |
 | Earlier corpus, now regression/tuning | 910 | 68/78 | 16/26 | 16/26 |

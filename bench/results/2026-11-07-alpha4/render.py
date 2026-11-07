@@ -18,7 +18,7 @@ lines=['# Alpha.4 qualification — 2026-11-07','',
        '[Method and reproduction](../../README.md#alpha4-candidate-qualification) · [Fresh frozen inputs](../../validation-alpha4.json) · [Plot generator](render.py)','',
        'Rust globset 0.4.21/glob 0.3.4, Go doublestar 4.10.4, Node picomatch 4.0.7/fast-glob 3.3.3. One-shot includes pattern compilation; reused mode excludes compilation where supported (Go has no prepared API). All results/path sets are preflighted; source, dependency, binary, corpus and complete fixture maps are checked. Node uses explicit JIT warmup. Error and filesystem policies differ.','',
        'Own heavy correctness/build/profiling jobs finished before retained timings. Other host activity was uncontrolled. Matcher timers exclude process startup/input IO; collection includes traversal IO. Generated collection trees contain empty regular files. No cold-storage, security-equivalence or language-wide ranking follows.','',
-       '## Summary','', '| Set | Samples | Lower medians vs alternatives | Fastest workload/mode cells | Lower medians vs alpha.3 |','| --- | ---: | ---: | ---: | ---: |']
+       '## Summary','', '| Set | Samples | Lower medians vs alternatives | Lower than all three alternatives | Lower medians vs alpha.3 |','| --- | ---: | ---: | ---: | ---: |']
 scores={}
 for name,data in series.items():
     rows=data['summary'];samples=data['samples'];groups=len(rows)
