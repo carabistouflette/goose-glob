@@ -2,6 +2,14 @@ name: CI
 on:
   push:
   pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Published version tag; leave empty to check the candidate checkout'
+        required: false
+        type: string
 permissions:
   contents: read
 jobs:
@@ -24,6 +32,15 @@ jobs:
       - run: make setup
       - run: make check test differential CC=${{ matrix.cc }}
       - run: make sanitize SANITIZER_CC=${{ matrix.cc }}
+      - name: Verify isolated supported-API consumer
+        env:
+          CONSUMER_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          if [ -n "$CONSUMER_TAG" ]; then
+            python3 scripts/check-consumer.py --goose .toolchain/goose/build/goose --cc "${{ matrix.cc }}" --tag "$CONSUMER_TAG"
+          else
+            python3 scripts/check-consumer.py --goose .toolchain/goose/build/goose --cc "${{ matrix.cc }}" --source "$PWD"
+          fi
       - name: Run source discovery example
         run: .toolchain/goose/build/goose run examples/find.goose -- "$PWD"
       - name: Validate competitive adapters (smoke, not performance qualification)
