@@ -81,6 +81,12 @@ fn main() {
         }
         check("**/\xff.goose", str(prefix, "/\xff.goose"), true);
     }
+    // Both APIs share the prefix shortcut only when the first literal
+    // comparison fits the budget, including a prefix lacking a separator.
+    for path in ["other/abcdefghijklmnopqrstuvwxyz/x", "srcmore/abcdefghijklmnopqrstuvwxyz/x"] {
+        check_status("src/**/x", path, glob::Options { work_limit: 3, .. }, false, glob::Error.LimitExceeded);
+        check_status("src/**/x", path, glob::Options { work_limit: 4, .. }, false, glob::Error.None);
+    }
     // Counting components cannot change the old order of fuel/hidden checks.
     check_status("src/*", "one", glob::Options { work_limit: 1, .. }, false, glob::Error.None);
     check_status("src/**/x", "one", glob::Options { work_limit: 1, .. }, false, glob::Error.None);

@@ -188,3 +188,13 @@ python3 bench/independent.py --baseline --rounds 7 --cpu 2 --label alpha5-regres
 python3 bench/independent.py --baseline --rounds 7 --cpu 2 \
   --corpus bench/validation-alpha5.json --label alpha5-validation
 ```
+
+## Rejected shared-prefix experiment
+
+The [retained tuning investigation](results/2026-11-07-prefix-experiment/README.md)
+tested moving the prepared prefix rejection into shared raw/prepared dispatch.
+Two seven-round probes retain all 672 samples and ranges; mixed gains and short-case
+regressions did not justify changing alpha.5. The patch is preserved as evidence
+and is not applied. `validation-alpha6.json` was committed before the experiment
+at `702f0a8` and remains unmeasured, available for a future candidate. No alpha.6
+release was made.

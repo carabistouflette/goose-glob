@@ -1,0 +1,39 @@
+diff --git a/glob.goose b/glob.goose
+index 8fe2c58..5c5407d 100644
+--- a/glob.goose
++++ b/glob.goose
+@@ -302,6 +302,17 @@ fn match_with_budget(pattern: Pattern&, path: const u8[:], names: Span[:], hidde
+ }
+ fn valid_options(options: Options) -> bool { options.work_limit >= 1 && options.work_limit <= MAX_WORK }
+ inline fn match_result(pattern: const u8[:], parts: Part[:], globstars: i64, path: const u8[:], options: Options) -> bool, Status {
++    // A literal prefix miss cannot exhaust this per-call budget. Long rejected
++    // candidates can be fully validated without building unused span storage.
++    if path.len >= PATH_SEARCH_THRESHOLD && parts.len > 1 && globstars <= 1 && parts[0].kind == ComponentKind.Literal {
++        let first = parts[0]; let prefix = pattern[first.start..first.end];
++        if options.work_limit >= prefix.len + 1 &&
++           (path.len < prefix.len || path[..prefix.len] != prefix || (path.len > prefix.len && path[prefix.len] != '/')) {
++            var checked: Span[>..] = [];
++            if scan_components(path, checked, false) == 0 { return false, Status { error: Error.InvalidPath }; }
++            return false, Status { .. };
++        }
++    }
+     // A validated all-literal pattern equal to its candidate proves candidate
+     // validity too. Mismatches still validate the complete candidate path.
+     if globstars == 0 && options.work_limit >= pattern.len + parts.len {
+@@ -339,16 +350,5 @@ inline fn matches(pattern: const u8[:], path: const u8[:], options: Options = Op
+ inline fn matches(pattern: Pattern&, path: const u8[:], options: Options = Options { .. }) -> bool, Status {
+     if !valid_options(options) { return false, Status { error: Error.InvalidOptions }; }
+     if pattern.parts.len == 0 { return false, Status { error: Error.InvalidPattern }; }
+-    // A literal prefix miss cannot exhaust this per-call budget. Long rejected
+-    // candidates can be fully validated without building unused span storage.
+-    if path.len >= PATH_SEARCH_THRESHOLD && pattern.parts.len > 1 && pattern.globstars <= 1 && pattern.parts[0].kind == ComponentKind.Literal {
+-        let first = pattern.parts[0]; let prefix = pattern.source[first.start..first.end];
+-        if options.work_limit >= prefix.len + 1 &&
+-           (path.len < prefix.len || path[..prefix.len] != prefix || (path.len > prefix.len && path[prefix.len] != '/')) {
+-            var checked: Span[>..] = [];
+-            if scan_components(path, checked, false) == 0 { return false, Status { error: Error.InvalidPath }; }
+-            return false, Status { .. };
+-        }
+-    }
+     return match_result(pattern.source, pattern.parts, pattern.globstars, path, options);
+ }
