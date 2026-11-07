@@ -54,3 +54,30 @@ normal/debug and ASan/UBSan checks, the differential model, and independent
 standards/API-contract reviews. Performance reports retain their original source
 identities and limits; v0.1.0 makes no new comparative speed claim. The alpha.5
 measurements remain historical evidence for the unchanged runtime.
+
+## Automated consumer verification
+
+`scripts/check-consumer.py` creates a client outside the checkout with a fresh
+`GOOSE_HOME`, using only documented APIs. It runs interpreted and optimized
+compiled checks for raw/prepared matches, syntax/path/option errors, collection
+and output clearing on a result limit. Git global/system configuration and
+ambient package/loader overrides are excluded from the child environment.
+
+Push and pull-request CI checks the candidate via `--source`. Published-release
+CI checks the public release tag, including prereleases. Manual CI runs accept a
+`tag` input, or check the candidate when it is empty. The tagged check runs after
+publication; it complements the candidate gate and the remaining release
+qualification rather than publishing or moving a tag itself.
+
+```sh
+python3 scripts/check-consumer.py --goose .toolchain/goose/build/goose --cc gcc --source "$PWD"
+python3 scripts/check-consumer.py --goose .toolchain/goose/build/goose --cc clang --tag v0.1.0
+```
+
+The temporary directory must be outside the source checkout. Set `TMPDIR` to an
+external writable directory if the default temporary filesystem is unsuitable.
+
+GitHub documents the publication trigger under
+[release events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#release)
+and the manual input under
+[workflow_dispatch](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onworkflow_dispatchinputs).
