@@ -4,7 +4,7 @@
   "sources": [
     {
       "name": "compiler",
-      "repository": "https://github.com/carabistouflette/goose",
+      "repository": "https://github.com/aardappel/goose",
       "revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
       "tree_path_list_sha256": "4749bbfe09e7a9f774f760a44b3b8e985cbd8a394e3b0033f1782f77a5dd54b1",
       "total_paths": 4501,
