@@ -1,0 +1,23 @@
+{
+  "baseline_release": "v0.1.0-alpha.5",
+  "baseline_runtime_revision": "02d7422d07469f1c483067a4d011698afbafbcc2",
+  "baseline_runtime_sha256": "6ee075e290c19781bcdcdba98a66b69756e5a6e4058327d1d3ebc1b6886e5f6e",
+  "baseline_binary_sha256": "7cc409180fa423cb35f077d6ff7e86c06184bf97c2ec3d7e3f7a0ed2b1c146b1",
+  "variants": {
+    "search16": {
+      "runtime_sha256": "6e044994ff3a7b6623582270c11d521e87c6355a4c00bfc3f16bcd62cb1ddd6d",
+      "binary_sha256": "41935496004b8d2ad90c64dbbae9ab8c02fa132963ec0fc00bbfa79d64fe3f88"
+    },
+    "guarded16": {
+      "runtime_sha256": "eee74cc786fc6ed551b792e34f7ccb6f6ec55fa91789a0f120aca45969238b2b",
+      "binary_sha256": "f7b4344c55e97d24253e0e04d3dd3a87906cfe7ffc2a36cdbcb9bec58024095c"
+    },
+    "search64": {
+      "runtime_sha256": "ec4592dfab373f404d727f162d25b674ac982690e6ca0b43b1be1ddf00537883",
+      "binary_sha256": "80baabacfe0d5024a668e0470741d198f29f65f09a516412cb165f918248611c"
+    }
+  },
+  "baseline_manifest": "../2026-11-07-prefix-experiment/baseline-prepared.json",
+  "compiler": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "limits": "Exploratory tuning screens only. Generated long literal workloads were added during tuning, after the first variant; they are not fresh validation. All variants rejected before touching the frozen fresh corpus."
+}

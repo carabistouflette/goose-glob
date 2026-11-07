@@ -198,3 +198,12 @@ regressions did not justify changing alpha.5. The patch is preserved as evidence
 and is not applied. `validation-alpha6.json` was committed before the experiment
 at `702f0a8` and remains unmeasured, available for a future candidate. No alpha.6
 release was made.
+
+## Rejected pattern byte searches
+
+The [literal-run search investigation](results/2026-11-07-pattern-search/README.md)
+retains all 1736 tuning samples from three std byte-search variants and two
+synthetic long-literal sets. Long synthetic patterns improve, but real-path
+one-shot workloads regress under every variant. Alpha.5 remains unchanged and
+the fresh corpus remains unmeasured. Retained patches are evidence, not applied
+optimizations; the report includes source/binary/input hashes and reproduction.
