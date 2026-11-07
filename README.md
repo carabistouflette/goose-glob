@@ -161,7 +161,14 @@ See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 
 ## Measured performance
 
-In the retained seven-round Linux workload set, matching has lower medians than
+The [separate frozen corpus](bench/results/2026-11-07-independent/README.md)
+uses 1,072 paths from three real Git trees, twelve patterns and two larger clean
+collection trees. Across seven rounds, goose-glob has lower medians in 67/78
+pairwise comparisons and is fastest in 15/26 workload/mode cells. Go wins ten
+matching comparisons; Rust wins deep-tree collection. Full ranges and losses are
+retained. Product code was unchanged after freezing this validation set.
+
+In the original nine-workload Linux corpus, matching has lower medians than
 all three pinned alternatives in every case: 9/9 direct-call and 9/9 prepared
 workloads against Rust globset, Go doublestar and Node picomatch. Clean-tree
 collection also has a lower median than the three collection adapters. Direct
