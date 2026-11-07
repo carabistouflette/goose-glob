@@ -6,7 +6,9 @@ components and uses bounded slice comparisons for them. Literal-only components
 with several stars search nonoverlapping literal chunks, with the first-byte search window
 restricted by fuel and subsequent prefix comparisons charged individually. Classes are decoded once while
 matching; more general components retain a greedy single-star scan. Pattern
-validation and classification share one scan, skipping ordinary literal runs.
+validation, classification and globstar counting share one scan, skipping ordinary
+literal runs. Raw matching and compilation reuse that count instead of scanning
+the completed metadata again.
 A validated literal pattern equal to its candidate establishes candidate validity;
 mismatches still validate the entire candidate. Single-component matching avoids
 temporary path-span storage. Small dispatch helpers inline into their callers. A single `**` matches the fixed components from both ends; multiple `**`
