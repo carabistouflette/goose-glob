@@ -1,0 +1,2707 @@
+{
+  "args": {
+    "before": ".build/alpha6/before",
+    "candidate": ".build/pattern-search/search16",
+    "corpus": ".build/bench/alpha5-regression-2026-11-07/corpus.tsv",
+    "output": ".build/pattern-search/probe16.json",
+    "rounds": 7,
+    "iterations": 131072,
+    "cpu": 2
+  },
+  "sha256": {
+    "before": "7cc409180fa423cb35f077d6ff7e86c06184bf97c2ec3d7e3f7a0ed2b1c146b1",
+    "candidate": "41935496004b8d2ad90c64dbbae9ab8c02fa132963ec0fc00bbfa79d64fe3f88",
+    "corpus": "803ea568decbbcc994167dc6d0e22ae8afc7dd9355c51da99457f5b0a3574593"
+  },
+  "driver_sha256": "ef754ac39307e071fd93f7a3e4464b1a6e427edbde08309acd55b5d8f9b29422",
+  "samples": [
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 50.39167022705078,
+      "checksum": 682
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 84.73602294921875,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 53.300376892089844,
+      "checksum": 1024
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 55.605384826660156,
+      "checksum": 170
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 56.23625946044922,
+      "checksum": 7196
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 57.433265686035156,
+      "checksum": 1028
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 63.01245880126953,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 73.77890014648438,
+      "checksum": 514
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 41.37528991699219,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 52.197532653808594,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 42.01280212402344,
+      "checksum": 2675
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 50.17687225341797,
+      "checksum": 24073
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 94.90605163574219,
+      "checksum": 682
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 120.19365692138672,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 95.89730834960938,
+      "checksum": 1024
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 100.25029754638672,
+      "checksum": 170
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 91.94697570800781,
+      "checksum": 7196
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 110.20309448242188,
+      "checksum": 1028
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 117.59967041015625,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 116.94013214111328,
+      "checksum": 514
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 68.28685760498047,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 84.02525329589844,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 87.09368133544922,
+      "checksum": 2675
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 69.39727020263672,
+      "checksum": 24073
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 105.01918029785156,
+      "checksum": 682
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 146.78065490722656,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 102.95760345458984,
+      "checksum": 1024
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 98.85899353027344,
+      "checksum": 170
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 87.55597686767578,
+      "checksum": 7196
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 116.06096649169922,
+      "checksum": 1028
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 123.5838851928711,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 117.2680435180664,
+      "checksum": 514
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 66.7098617553711,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 94.13795471191406,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 89.53041076660156,
+      "checksum": 2675
+    },
+    {
+      "round": 0,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 71.51531219482422,
+      "checksum": 24073
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 50.90296173095703,
+      "checksum": 682
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 85.69337463378906,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 53.877723693847656,
+      "checksum": 1024
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 50.966697692871094,
+      "checksum": 170
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 56.936302185058594,
+      "checksum": 7196
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 55.56147766113281,
+      "checksum": 1028
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 62.301841735839844,
+      "checksum": 0
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.1966552734375,
+      "checksum": 514
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 41.144325256347656,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 51.13984680175781,
+      "checksum": 8025
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.23054504394531,
+      "checksum": 2675
+    },
+    {
+      "round": 0,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 49.27727508544922,
+      "checksum": 24073
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 49.70231628417969,
+      "checksum": 682
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 83.4381103515625,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 52.586204528808594,
+      "checksum": 1024
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.60597229003906,
+      "checksum": 170
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 53.616546630859375,
+      "checksum": 7196
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 58.06916809082031,
+      "checksum": 1028
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 57.442291259765625,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.78973388671875,
+      "checksum": 514
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.367286682128906,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 52.46674346923828,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 39.685157775878906,
+      "checksum": 2675
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 49.441864013671875,
+      "checksum": 24073
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 94.13150024414062,
+      "checksum": 682
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 122.01573944091797,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 96.78787994384766,
+      "checksum": 1024
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 97.14665985107422,
+      "checksum": 170
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 91.07003021240234,
+      "checksum": 7196
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 109.492919921875,
+      "checksum": 1028
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 110.94950866699219,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 114.31221008300781,
+      "checksum": 514
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 68.97705078125,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 87.13015747070312,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 88.82046508789062,
+      "checksum": 2675
+    },
+    {
+      "round": 1,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 75.02644348144531,
+      "checksum": 24073
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 111.5822525024414,
+      "checksum": 682
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 148.04037475585938,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 105.64302825927734,
+      "checksum": 1024
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 100.31211853027344,
+      "checksum": 170
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 90.44865417480469,
+      "checksum": 7196
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 118.57925415039062,
+      "checksum": 1028
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 124.79026794433594,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 116.72278594970703,
+      "checksum": 514
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 65.45745086669922,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 95.5476303100586,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 90.72047424316406,
+      "checksum": 2675
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 71.436279296875,
+      "checksum": 24073
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 53.16767883300781,
+      "checksum": 682
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 86.59413146972656,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 56.725990295410156,
+      "checksum": 1024
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 54.39678192138672,
+      "checksum": 170
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 55.51243591308594,
+      "checksum": 7196
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 62.25288391113281,
+      "checksum": 1028
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 61.05152130126953,
+      "checksum": 0
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.95545196533203,
+      "checksum": 514
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 39.876129150390625,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 51.82721710205078,
+      "checksum": 8025
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.22077941894531,
+      "checksum": 2675
+    },
+    {
+      "round": 1,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 52.63941955566406,
+      "checksum": 24073
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 109.08885192871094,
+      "checksum": 682
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 148.13501739501953,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 105.76307678222656,
+      "checksum": 1024
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 98.88862609863281,
+      "checksum": 170
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 87.02555847167969,
+      "checksum": 7196
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 115.91368865966797,
+      "checksum": 1028
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 121.17841339111328,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 116.17494201660156,
+      "checksum": 514
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 63.862525939941406,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 94.02449798583984,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 91.23399353027344,
+      "checksum": 2675
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 73.8093032836914,
+      "checksum": 24073
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 94.44194030761719,
+      "checksum": 682
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 120.91598510742188,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 95.59429168701172,
+      "checksum": 1024
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 96.52718353271484,
+      "checksum": 170
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 83.05838775634766,
+      "checksum": 7196
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 115.5489501953125,
+      "checksum": 1028
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 114.17678833007812,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 112.4262466430664,
+      "checksum": 514
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 65.9104232788086,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 84.07869720458984,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 85.01944732666016,
+      "checksum": 2675
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 70.49165344238281,
+      "checksum": 24073
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 50.825897216796875,
+      "checksum": 682
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 84.05157470703125,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 53.21576690673828,
+      "checksum": 1024
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 51.292938232421875,
+      "checksum": 170
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 55.960205078125,
+      "checksum": 7196
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 57.151824951171875,
+      "checksum": 1028
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 60.549713134765625,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 70.72660827636719,
+      "checksum": 514
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.32267761230469,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 51.15321350097656,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 41.46141052246094,
+      "checksum": 2675
+    },
+    {
+      "round": 2,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 48.61644744873047,
+      "checksum": 24073
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 50.713401794433594,
+      "checksum": 682
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 86.95307159423828,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 54.12102508544922,
+      "checksum": 1024
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 55.251686096191406,
+      "checksum": 170
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 56.44341278076172,
+      "checksum": 7196
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 57.29698944091797,
+      "checksum": 1028
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 63.781524658203125,
+      "checksum": 0
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 72.04845428466797,
+      "checksum": 514
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.008338928222656,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 53.62451171875,
+      "checksum": 8025
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 39.15898132324219,
+      "checksum": 2675
+    },
+    {
+      "round": 2,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 52.22328186035156,
+      "checksum": 24073
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 50.17213439941406,
+      "checksum": 682
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 82.53472137451172,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 55.660499572753906,
+      "checksum": 1024
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.11314392089844,
+      "checksum": 170
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 55.46376037597656,
+      "checksum": 7196
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 55.148414611816406,
+      "checksum": 1028
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 62.48619079589844,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 70.72494506835938,
+      "checksum": 514
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.06915283203125,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 52.05335235595703,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.95909118652344,
+      "checksum": 2675
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 49.07386779785156,
+      "checksum": 24073
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 53.128379821777344,
+      "checksum": 682
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 84.22671508789062,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 55.16523742675781,
+      "checksum": 1024
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 54.357337951660156,
+      "checksum": 170
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 54.991981506347656,
+      "checksum": 7196
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 54.604530334472656,
+      "checksum": 1028
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 58.77429962158203,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 74.72653198242188,
+      "checksum": 514
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.274208068847656,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 48.88011169433594,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.17439270019531,
+      "checksum": 2675
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 48.52001190185547,
+      "checksum": 24073
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 106.33879089355469,
+      "checksum": 682
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 143.97930908203125,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 99.51214599609375,
+      "checksum": 1024
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 97.433837890625,
+      "checksum": 170
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 87.3602066040039,
+      "checksum": 7196
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 114.75609588623047,
+      "checksum": 1028
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 119.27567291259766,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 116.40795135498047,
+      "checksum": 514
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 64.99351501464844,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 89.51876068115234,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 88.34109497070312,
+      "checksum": 2675
+    },
+    {
+      "round": 3,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 74.86595153808594,
+      "checksum": 24073
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 93.005615234375,
+      "checksum": 682
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 122.2830581665039,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 98.05699157714844,
+      "checksum": 1024
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 96.79762268066406,
+      "checksum": 170
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 87.47724914550781,
+      "checksum": 7196
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 111.62609100341797,
+      "checksum": 1028
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 115.9615707397461,
+      "checksum": 0
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 115.40290832519531,
+      "checksum": 514
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 69.43338775634766,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 81.66382598876953,
+      "checksum": 8025
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 82.83953857421875,
+      "checksum": 2675
+    },
+    {
+      "round": 3,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 72.89883422851562,
+      "checksum": 24073
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 52.52935791015625,
+      "checksum": 682
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 82.9139175415039,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 54.984588623046875,
+      "checksum": 1024
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.056907653808594,
+      "checksum": 170
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 55.33534240722656,
+      "checksum": 7196
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 58.031158447265625,
+      "checksum": 1028
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 63.632476806640625,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 72.94631958007812,
+      "checksum": 514
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 39.11767578125,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 51.356666564941406,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.244789123535156,
+      "checksum": 2675
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 50.22563171386719,
+      "checksum": 24073
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 104.97252655029297,
+      "checksum": 682
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 146.00668334960938,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 103.65321350097656,
+      "checksum": 1024
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 98.5023422241211,
+      "checksum": 170
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 86.86003875732422,
+      "checksum": 7196
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 115.60635375976562,
+      "checksum": 1028
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 122.1133804321289,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 119.74146270751953,
+      "checksum": 514
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 67.83413696289062,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 91.50016784667969,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 87.02229309082031,
+      "checksum": 2675
+    },
+    {
+      "round": 4,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 73.68360137939453,
+      "checksum": 24073
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 52.517234802246094,
+      "checksum": 682
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 80.15858459472656,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 53.21752166748047,
+      "checksum": 1024
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.50642395019531,
+      "checksum": 170
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 57.25074005126953,
+      "checksum": 7196
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 57.805702209472656,
+      "checksum": 1028
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 59.29075622558594,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.3780517578125,
+      "checksum": 514
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 42.39952850341797,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 49.02246856689453,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 39.03478240966797,
+      "checksum": 2675
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 52.34165954589844,
+      "checksum": 24073
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 96.99734497070312,
+      "checksum": 682
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 118.95989227294922,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 96.6927261352539,
+      "checksum": 1024
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 96.16587829589844,
+      "checksum": 170
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 90.44529724121094,
+      "checksum": 7196
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 110.5596694946289,
+      "checksum": 1028
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 113.32608795166016,
+      "checksum": 0
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 111.24029541015625,
+      "checksum": 514
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 65.83460998535156,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 85.35696411132812,
+      "checksum": 8025
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 83.0269546508789,
+      "checksum": 2675
+    },
+    {
+      "round": 4,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 70.46683502197266,
+      "checksum": 24073
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 51.172340393066406,
+      "checksum": 682
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 82.86653900146484,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 54.81696319580078,
+      "checksum": 1024
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.024131774902344,
+      "checksum": 170
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 54.140052795410156,
+      "checksum": 7196
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 58.90693664550781,
+      "checksum": 1028
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 56.99644470214844,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.01707458496094,
+      "checksum": 514
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 39.943389892578125,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 50.70453643798828,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 42.654579162597656,
+      "checksum": 2675
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 50.76969909667969,
+      "checksum": 24073
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 110.58392333984375,
+      "checksum": 682
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 148.02014923095703,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 105.29312896728516,
+      "checksum": 1024
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 100.52478790283203,
+      "checksum": 170
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 88.61910247802734,
+      "checksum": 7196
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 115.30546569824219,
+      "checksum": 1028
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 124.25220489501953,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 120.33458709716797,
+      "checksum": 514
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 68.61427307128906,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 92.50116729736328,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 88.39954376220703,
+      "checksum": 2675
+    },
+    {
+      "round": 5,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 70.26751708984375,
+      "checksum": 24073
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 99.111083984375,
+      "checksum": 682
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 124.90492248535156,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 96.25884246826172,
+      "checksum": 1024
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 95.2358169555664,
+      "checksum": 170
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 84.05860900878906,
+      "checksum": 7196
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 106.07747650146484,
+      "checksum": 1028
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 115.58271789550781,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 111.03369903564453,
+      "checksum": 514
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 71.66829681396484,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 88.73871612548828,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 90.27949523925781,
+      "checksum": 2675
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 72.22929382324219,
+      "checksum": 24073
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 52.97907257080078,
+      "checksum": 682
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 85.82393646240234,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 55.343536376953125,
+      "checksum": 1024
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 53.93609619140625,
+      "checksum": 170
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 55.775672912597656,
+      "checksum": 7196
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 63.30463409423828,
+      "checksum": 1028
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 58.39239501953125,
+      "checksum": 0
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 71.67803955078125,
+      "checksum": 514
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.17085266113281,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 51.493255615234375,
+      "checksum": 8025
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 40.49177551269531,
+      "checksum": 2675
+    },
+    {
+      "round": 5,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 51.20282745361328,
+      "checksum": 24073
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 92.49981689453125,
+      "checksum": 682
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 126.08248138427734,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 94.6537094116211,
+      "checksum": 1024
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 100.77092742919922,
+      "checksum": 170
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 81.4116439819336,
+      "checksum": 7196
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 110.70565032958984,
+      "checksum": 1028
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 113.65045166015625,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 112.11170196533203,
+      "checksum": 514
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 67.04558563232422,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 85.23346710205078,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 85.77330017089844,
+      "checksum": 2675
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 70.8594741821289,
+      "checksum": 24073
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 51.08336639404297,
+      "checksum": 682
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 85.44588470458984,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 55.12010192871094,
+      "checksum": 1024
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 53.06761169433594,
+      "checksum": 170
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 54.038108825683594,
+      "checksum": 7196
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 54.03797912597656,
+      "checksum": 1028
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 59.658119201660156,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 70.77486419677734,
+      "checksum": 514
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 39.463829040527344,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 53.2569580078125,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 39.094749450683594,
+      "checksum": 2675
+    },
+    {
+      "round": 6,
+      "engine": "before",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 49.03040313720703,
+      "checksum": 24073
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_1",
+      "ns_per_op": 52.36346435546875,
+      "checksum": 682
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_2",
+      "ns_per_op": 80.15293884277344,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_3",
+      "ns_per_op": 58.094261169433594,
+      "checksum": 1024
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "compiler_4",
+      "ns_per_op": 52.534446716308594,
+      "checksum": 170
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_1",
+      "ns_per_op": 57.055152893066406,
+      "checksum": 7196
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_2",
+      "ns_per_op": 52.96668243408203,
+      "checksum": 1028
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_3",
+      "ns_per_op": 59.156593322753906,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "honk_4",
+      "ns_per_op": 68.89533996582031,
+      "checksum": 514
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_1",
+      "ns_per_op": 40.51226806640625,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_2",
+      "ns_per_op": 50.36412811279297,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_3",
+      "ns_per_op": 41.105445861816406,
+      "checksum": 2675
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "reused",
+      "name": "glob_4",
+      "ns_per_op": 52.808441162109375,
+      "checksum": 24073
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_1",
+      "ns_per_op": 112.26152801513672,
+      "checksum": 682
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_2",
+      "ns_per_op": 148.18462371826172,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_3",
+      "ns_per_op": 103.61869812011719,
+      "checksum": 1024
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "compiler_4",
+      "ns_per_op": 100.86506652832031,
+      "checksum": 170
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_1",
+      "ns_per_op": 84.86607360839844,
+      "checksum": 7196
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_2",
+      "ns_per_op": 116.41993713378906,
+      "checksum": 1028
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_3",
+      "ns_per_op": 117.93301391601562,
+      "checksum": 0
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "honk_4",
+      "ns_per_op": 118.91108703613281,
+      "checksum": 514
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_1",
+      "ns_per_op": 67.28527069091797,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_2",
+      "ns_per_op": 89.55733489990234,
+      "checksum": 8025
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_3",
+      "ns_per_op": 93.5692138671875,
+      "checksum": 2675
+    },
+    {
+      "round": 6,
+      "engine": "candidate",
+      "mode": "oneshot",
+      "name": "glob_4",
+      "ns_per_op": 70.98777770996094,
+      "checksum": 24073
+    }
+  ]
+}

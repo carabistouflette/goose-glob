@@ -1,0 +1,16 @@
+--- a/glob.goose
++++ b/glob.goose
+@@ -84,7 +84,12 @@
+         let start = at;
+         var stars = 0; var general = false; var globstar = false;
+         while at < pattern.len {
+-            while at < pattern.len && !PATTERN_META.members[pattern[at]] { at++; }
++            if pattern.len - at >= 64 {
++                let next = find_any(pattern[at..], PATTERN_META);
++                at = if next < 0 { pattern.len } else { at + next };
++            } else {
++                while at < pattern.len && !PATTERN_META.members[pattern[at]] { at++; }
++            }
+             if at == pattern.len || pattern[at] == '/' { break; }
+             let c = pattern[at];
+             if c == 0 { return -1; }

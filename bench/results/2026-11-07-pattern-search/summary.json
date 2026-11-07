@@ -1,0 +1,77 @@
+{
+  "probe16": {
+    "samples": 336,
+    "oneshot": {
+      "lower_medians": 2,
+      "cells": 12,
+      "minimum_change_percent": -2.3093694817996058,
+      "maximum_change_percent": 21.312340448201628
+    },
+    "reused": {
+      "lower_medians": 6,
+      "cells": 12,
+      "minimum_change_percent": -2.963240619299168,
+      "maximum_change_percent": 3.5788898558966276
+    }
+  },
+  "guarded16": {
+    "samples": 336,
+    "oneshot": {
+      "lower_medians": 0,
+      "cells": 12,
+      "minimum_change_percent": 3.667050115562942,
+      "maximum_change_percent": 18.781651127892673
+    },
+    "reused": {
+      "lower_medians": 7,
+      "cells": 12,
+      "minimum_change_percent": -4.315835194715478,
+      "maximum_change_percent": 2.8939141645024424
+    }
+  },
+  "probe64": {
+    "samples": 336,
+    "oneshot": {
+      "lower_medians": 1,
+      "cells": 12,
+      "minimum_change_percent": -1.3849423049013265,
+      "maximum_change_percent": 14.174805962902948
+    },
+    "reused": {
+      "lower_medians": 11,
+      "cells": 12,
+      "minimum_change_percent": -3.9071274645300025,
+      "maximum_change_percent": 0.8566522025517109
+    }
+  },
+  "long16": {
+    "samples": 364,
+    "oneshot": {
+      "lower_medians": 12,
+      "cells": 13,
+      "minimum_change_percent": -79.90305834966807,
+      "maximum_change_percent": 6.6969017584036505
+    },
+    "reused": {
+      "lower_medians": 12,
+      "cells": 13,
+      "minimum_change_percent": -5.661952348016886,
+      "maximum_change_percent": 1.2060770409193955
+    }
+  },
+  "long64": {
+    "samples": 364,
+    "oneshot": {
+      "lower_medians": 8,
+      "cells": 13,
+      "minimum_change_percent": -80.28444730497398,
+      "maximum_change_percent": 6.827612356508994
+    },
+    "reused": {
+      "lower_medians": 6,
+      "cells": 13,
+      "minimum_change_percent": -2.5018690781747566,
+      "maximum_change_percent": 6.055639730944673
+    }
+  }
+}

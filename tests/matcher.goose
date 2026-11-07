@@ -87,6 +87,20 @@ fn main() {
         check_status("src/**/x", path, glob::Options { work_limit: 3, .. }, false, glob::Error.LimitExceeded);
         check_status("src/**/x", path, glob::Options { work_limit: 4, .. }, false, glob::Error.None);
     }
+    // Long literal runs must preserve escape, wildcard and syntax validation.
+    for width in [15, 16, 17, 31, 32, 33, 63, 64, 65, 127] {
+        var literal = str(""); literal.resize(width, 'a');
+        check(literal, literal, true);
+        check(str(literal, "\\*"), str(literal, "*"), true);
+        check(str(literal, "?"), str(literal, "z"), true);
+        check(str(literal, "/[a-z]*.goose"), str(literal, "/x.goose"), true);
+        for ending in ["\\", "[", "\0x", "/.."] {
+            let malformed = str(literal, ending);
+            assert(glob::validate(malformed).error == glob::Error.InvalidPattern);
+            let _, status = glob::matches(malformed, literal);
+            assert(status.error == glob::Error.InvalidPattern);
+        }
+    }
     // Counting components cannot change the old order of fuel/hidden checks.
     check_status("src/*", "one", glob::Options { work_limit: 1, .. }, false, glob::Error.None);
     check_status("src/**/x", "one", glob::Options { work_limit: 1, .. }, false, glob::Error.None);
