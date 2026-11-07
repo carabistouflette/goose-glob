@@ -69,7 +69,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rounds', type=int, default=7)
     parser.add_argument('--iterations', type=int, default=65536)
-    parser.add_argument('--compile-iterations', type=int, default=2048)
+    parser.add_argument('--compile-iterations', type=int, default=8192)
     parser.add_argument('--walk-iterations', type=int, default=32)
     parser.add_argument('--cpu', type=int, default=2)
     parser.add_argument('--label', default='independent')
@@ -112,7 +112,7 @@ def main():
             verify_fixtures(output, frozen_hash, corpus_hash, fixtures)
             walking = mode in fixtures
             count = args.walk_iterations if walking else (
-                args.compile_iterations if mode == 'oneshot' and engine in ('rust', 'node') else args.iterations)
+                args.compile_iterations if mode == 'oneshot' else args.iterations)
             command = manifest['commands'][engine]
             fixture = output/'corpus.tsv'
             if walking:

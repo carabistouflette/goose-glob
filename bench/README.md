@@ -116,8 +116,9 @@ The second command reuses the exact prepared adapters, locked dependencies and
 before/after source, tool, dependency and binary checks. It adds a frozen corpus
 hash and complete fixture manifests. It checks every result before timing and
 validates dynamic checksums for each natural hit ratio and iteration count.
-One-shot Rust/Node use 2048 iterations by default; Goose/Go and all reused modes
-use 65536. Node keeps the same explicit JIT warmup as the retained harness.
+Every engine uses the same path sequence and call count within a mode: 8192
+one-shot calls and 65536 reused calls by default. This preserves identical path
+weights even when a count ends partway through a corpus cycle. Node keeps the same explicit JIT warmup as the retained harness.
 
 Collection uses the normal APIs and `**/*.goose`, with complete sorted path-set
 preflight, on separate clean empty-file trees: wide (192 directories, 1536 files,
