@@ -23,6 +23,12 @@ fn main() {
     check("a/**/b", "a/b", true);
     check("a/**/b", "a/x/y/b", true);
     check("a/**/b", "a/x/y/c", false);
+    check("[*]/**/x", "*/a/x", true);
+    check("\\*\\*/x", "**/x", true);
+    let rejected_tail, rejected_status = glob::compile("a/**/[");
+    assert(rejected_status.error == glob::Error.InvalidPattern);
+    let _, rejected_match = glob::matches(rejected_tail, "a/x");
+    assert(rejected_match.error == glob::Error.InvalidPattern);
     check("**", "a/b", true);
     check("**/**/b", "a/b", true);
     check("a/**", "a", true);

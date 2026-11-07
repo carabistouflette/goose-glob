@@ -162,6 +162,17 @@ See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 
 ## Measured performance
 
+The [alpha.5 parser qualification](bench/results/2026-11-07-alpha5/README.md)
+retains 1260 samples. Counting globstars during parsing removes a separate pass.
+One-shot medians improve over alpha.4 in 11/12 regression workloads and 3/4 fresh
+workloads. The fresh improvements are 1.9–3.9%; the remaining case is 0.2% slower.
+Reused matching and collection show no fresh gain. Against the pinned Rust/Go/Node
+alternatives, fresh alpha.5 medians are lower in 26/30 comparisons and lower than
+all three in 6/10 cells. All ranges and slower outcomes remain public; shared-host
+measurements do not establish significance or universal rankings.
+
+Historical alpha.4 results follow; they describe that exact runtime.
+
 The [alpha.4 qualification](bench/results/2026-11-07-alpha4/README.md) retains
 2485 samples across the legacy, regression and fresh frozen sets. On fresh inputs,
 alpha.4 has lower medians in 68/78 comparisons against the pinned alternatives,

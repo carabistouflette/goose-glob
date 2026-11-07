@@ -165,3 +165,26 @@ The raw report includes the selected corpus, its full hash, exact fixture maps,
 expected paths, tools, binaries and dependencies. Median/min/max and checksums
 are retained for every engine and round. Compiler/library policies still differ;
 this is a workload comparison rather than a universal language ranking.
+
+## Alpha.5 parser experiment
+
+`validation-alpha5.json` was saved and its SHA-256
+`738c902a5452afcc78562a22b9df7ecc71d430293f3a55c2fbbe73c8cd4df538`
+recorded before the parser experiment; it was committed afterwards. It selects
+512 additional compiler paths disjoint from both earlier selections and four
+new patterns. Its timing is first examined after candidate freeze/review.
+Prepare with reference `2022a04e1847490c9c76af91e1e5c01a3c6e3cc0`, then run
+`bench/independent.py --baseline --corpus bench/validation-alpha5.json --label alpha5-validation`.
+The earlier independent corpus is regression/tuning data. All counts, guards and
+shared-host limits from the alpha.4 method apply.
+
+Retained [alpha.5 qualification](results/2026-11-07-alpha5/README.md) includes
+both sets and all losses. Reproduce after preparing the exact reference:
+
+```sh
+python3 bench/run.py --goose /absolute/pinned/goose \
+  --reference 2022a04e1847490c9c76af91e1e5c01a3c6e3cc0 --prepare-only
+python3 bench/independent.py --baseline --rounds 7 --cpu 2 --label alpha5-regression
+python3 bench/independent.py --baseline --rounds 7 --cpu 2 \
+  --corpus bench/validation-alpha5.json --label alpha5-validation
+```
