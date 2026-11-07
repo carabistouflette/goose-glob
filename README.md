@@ -129,8 +129,9 @@ Collector options (default; accepted range):
 - `work_limit`: 1048576; 1–16777216, shared across all inclusion/exclusion matches.
 
 At most 64 exclusions. Each directory listing has goose-fs's independent cap of
-4096 entries and 1 MiB of packed names, including entries later filtered out. Adaptive staging starts at 64 KiB; a larger
-listing may be read again while retaining the same entry/byte caps.
+4096 entries and 1 MiB of packed names, including entries later filtered out.
+A 4 KiB first attempt is retried through adaptive staging starting at 64 KiB when
+needed; larger listings may be read again under the same entry/byte caps.
 Queued directory paths have a cumulative 16 MiB cap; queue records are also
 bounded by `max_entries`. Results are staged before replacing output, so old
 output, staging, backend buffers and queue storage can coexist.
