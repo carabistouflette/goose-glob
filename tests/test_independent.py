@@ -29,6 +29,10 @@ class Independent(unittest.TestCase):
             root = Path(temporary)
             (root/'corpus.tsv').write_text('frozen')
             fixtures = {'deep': independent.make_tree(root/'deep', 'deep')}
+            self.assertIn('branch0/d0/file.goose', fixtures['deep']['entries'])
+            self.assertIn('branch0/d0/file.txt', fixtures['deep']['entries'])
+            self.assertEqual(fixtures['deep']['expected_sha256'],
+                             'a0019d5122fdf6a6060df70f87648cf7cb26e13d65785bc11821a267ca3ce0b8')
             args = root, independent.run.digest(independent.FROZEN), independent.run.digest(root/'corpus.tsv'), fixtures
             independent.verify_fixtures(*args)
             (root/'deep/tree/extra.txt').touch()
@@ -44,6 +48,26 @@ class Independent(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, 'fixture changed'):
                 independent.verify_fixtures(root, independent.run.digest(independent.FROZEN),
                                             independent.run.digest(root/'corpus.tsv'), fixtures)
+
+    def test_custom_corpus_mutation_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root/'corpus.tsv').write_text('fixed')
+            frozen = root/'custom.json'
+            frozen.write_text('{}')
+            args = root, independent.run.digest(frozen), independent.run.digest(root/'corpus.tsv'), {}, frozen
+            independent.verify_fixtures(*args)
+            frozen.write_text('{"changed":true}')
+            with self.assertRaisesRegex(SystemExit, 'corpus changed'):
+                independent.verify_fixtures(*args)
+
+    def test_custom_geometry_keeps_duplicate_extensions_distinct(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            geometry = {'deep': {'branches': 2, 'levels': 3, 'extensions': ['goose', 'txt', 'goose']}}
+            fixture = independent.make_tree(Path(temporary)/'deep', 'deep', geometry)
+            self.assertEqual(fixture['matches'], 12)
+            self.assertIn('branch0/d0/file0.goose', fixture['entries'])
+            self.assertIn('branch0/d0/file2.goose', fixture['entries'])
 
 
 if __name__ == '__main__':

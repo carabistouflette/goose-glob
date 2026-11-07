@@ -1,0 +1,26 @@
+{
+  "legacy": {
+    "samples": 665,
+    "wins": 57,
+    "total": 57,
+    "best": 19,
+    "cells": 19,
+    "improved": 6
+  },
+  "regression": {
+    "samples": 910,
+    "wins": 68,
+    "total": 78,
+    "best": 16,
+    "cells": 26,
+    "improved": 16
+  },
+  "validation": {
+    "samples": 910,
+    "wins": 68,
+    "total": 78,
+    "best": 16,
+    "cells": 26,
+    "improved": 18
+  }
+}

@@ -129,8 +129,9 @@ Collector options (default; accepted range):
 - `work_limit`: 1048576; 1–16777216, shared across all inclusion/exclusion matches.
 
 At most 64 exclusions. Each directory listing has goose-fs's independent cap of
-4096 entries and 1 MiB of packed names, including entries later filtered out. Adaptive staging starts at 64 KiB; a larger
-listing may be read again while retaining the same entry/byte caps.
+4096 entries and 1 MiB of packed names, including entries later filtered out.
+A 4 KiB first attempt is retried through adaptive staging starting at 64 KiB when
+needed; larger listings may be read again under the same entry/byte caps.
 Queued directory paths have a cumulative 16 MiB cap; queue records are also
 bounded by `max_entries`. Results are staged before replacing output, so old
 output, staging, backend buffers and queue storage can coexist.
@@ -161,14 +162,23 @@ See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 
 ## Measured performance
 
-The [separate frozen corpus](bench/results/2026-11-07-independent/README.md)
+The [alpha.4 qualification](bench/results/2026-11-07-alpha4/README.md) retains
+2485 samples across the legacy, regression and fresh frozen sets. On fresh inputs,
+alpha.4 has lower medians in 68/78 comparisons against the pinned alternatives,
+has lower medians than all three alternatives in 16/26 cells, and improves on
+alpha.3 in
+18/26 cells. Both fresh clean-tree collections have lower medians than all three
+alternatives. Some short matching cases have higher medians; every range and
+slower result is retained. These are workload-specific observations.
+
+The earlier [alpha.3 separate corpus](bench/results/2026-11-07-independent/README.md)
 uses 1,072 paths from three real Git trees, twelve patterns and two larger clean
 collection trees. Across seven rounds, goose-glob has lower medians in 67/78
 pairwise comparisons and is fastest in 15/26 workload/mode cells. Go wins ten
 matching comparisons; Rust wins deep-tree collection. Full ranges and losses are
 retained. Product code was unchanged after freezing this validation set.
 
-In the original nine-workload Linux corpus, matching has lower medians than
+In the original alpha.3 nine-workload Linux report, matching has lower medians than
 all three pinned alternatives in every case: 9/9 direct-call and 9/9 prepared
 workloads against Rust globset, Go doublestar and Node picomatch. Clean-tree
 collection also has a lower median than the three collection adapters. Direct

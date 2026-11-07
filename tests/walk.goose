@@ -10,7 +10,7 @@ fn failed(root: const u8[:], options: glob_walk::Options, expected: glob::Error)
     assert(status.error == expected && out.len == 0);
 }
 fn main() {
-    let argv = args(); assert(argv.len == 4);
+    let argv = args(); assert(argv.len == 6);
     let root = argv[1];
     var out: u8[][>..] = [];
     let excludes = ["vendor", ".build"];
@@ -59,6 +59,20 @@ fn main() {
     let wide = glob_walk::collect(argv[3], "*.goose", [],
         glob_walk::Options { max_entries: 300, max_results: 300, max_result_bytes: 71700 }, out);
     assert(wide.error == glob::Error.None && out.len == 300);
+    // Exact 4 KiB packed listing and one byte above it preserve all names,
+    // entry limits and failure clearing across the small-list retry.
+    for edge in 4..6 {
+        let listed = glob_walk::collect(argv[edge], "*.goose", [],
+            glob_walk::Options { max_entries: 16, max_results: 16, .. }, out);
+        assert(listed.error == glob::Error.None && out.len == 16);
+        for i in 16 {
+            var prefix = str(""); prefix.resize(if edge == 5 && i == 0 { 247 } else { 246 }, 'x');
+            let expected = str(prefix, if i < 10 { "0" } else { "" }, i, ".goose");
+            var found = false; for path in out { if path == expected { found = true; } }
+            assert(found);
+        }
+        failed(argv[edge], glob_walk::Options { max_entries: 15, .. }, glob::Error.LimitExceeded);
+    }
     // A borrowed argument may refer to the old output: it is staged safely.
     out.clear(); out.push(str(root));
     for old in out {

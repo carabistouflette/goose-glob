@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Validate frozen real-tree paths and larger clean trees without retuning code."""
+"""Measure a named frozen corpus with guarded adapters and explicit provenance."""
 import argparse
 from collections import defaultdict
 import json
@@ -17,9 +17,9 @@ import run
 FROZEN = Path(__file__).with_name('independent-corpus.json')
 
 
-def rows():
+def rows(frozen=FROZEN):
     result = []
-    for source in json.loads(FROZEN.read_text())['sources']:
+    for source in json.loads(frozen.read_text())['sources']:
         for index, pattern in enumerate(source['patterns']):
             for path in source['paths']:
                 result.append((f"{source['name']}_{index + 1}", pattern, path,
@@ -32,16 +32,20 @@ def checksum(outcomes, count):
     return cycles * sum(outcomes) + sum(outcomes[:tail])
 
 
-def make_tree(directory, shape):
+def make_tree(directory, shape, configuration=None):
     tree = directory/'tree'
     tree.mkdir(parents=True)
     expected = []
+    defaults = {'wide': {'groups': 192, 'extensions': ['goose', 'txt', 'goose', 'txt', 'goose', 'txt', 'txt', 'txt']},
+                'deep': {'branches': 12, 'levels': 24, 'extensions': ['goose', 'txt']}}
+    geometry = (configuration or defaults)[shape]
     if shape == 'wide':
-        names = (f'package{p}/module{i}.{ext}' for p in range(192)
-                 for i, ext in enumerate(('goose', 'txt', 'goose', 'txt', 'goose', 'txt', 'txt', 'txt')))
+        names = (f'package{p}/module{i}.{ext}' for p in range(geometry['groups'])
+                 for i, ext in enumerate(geometry['extensions']))
     else:
-        names = (f"branch{p}/" + '/'.join(f'd{d}' for d in range(depth + 1)) + f'/file.{ext}'
-                 for p in range(12) for depth in range(24) for ext in ('goose', 'txt'))
+        names = (f"branch{p}/" + '/'.join(f'd{d}' for d in range(depth + 1)) + f'/file{i if configuration else ""}.{ext}'
+                 for p in range(geometry['branches']) for depth in range(geometry['levels'])
+                 for i, ext in enumerate(geometry['extensions']))
     for name in names:
         path = tree/name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -55,8 +59,8 @@ def make_tree(directory, shape):
             'matches': len(expected)}
 
 
-def verify_fixtures(output, frozen_hash, corpus_hash, fixtures):
-    if run.digest(FROZEN) != frozen_hash or run.digest(output/'corpus.tsv') != corpus_hash:
+def verify_fixtures(output, frozen_hash, corpus_hash, fixtures, frozen=FROZEN):
+    if run.digest(frozen) != frozen_hash or run.digest(output/'corpus.tsv') != corpus_hash:
         raise SystemExit('Independent corpus changed')
     for shape, fixture in fixtures.items():
         directory = output/shape
@@ -73,6 +77,8 @@ def main():
     parser.add_argument('--walk-iterations', type=int, default=32)
     parser.add_argument('--cpu', type=int, default=2)
     parser.add_argument('--label', default='independent')
+    parser.add_argument('--corpus', type=Path, default=FROZEN)
+    parser.add_argument('--baseline', action='store_true', help='include the prepared reference implementation')
     args = parser.parse_args()
     if min(args.rounds, args.iterations, args.compile_iterations, args.walk_iterations) < 1:
         parser.error('positive counts required')
@@ -82,26 +88,30 @@ def main():
     run.verify(manifest)
     output = run.OUT/args.label
     output.mkdir()  # Never silently overwrite an earlier experiment.
-    cases = rows()
+    frozen = args.corpus.resolve()
+    frozen_hash = run.digest(frozen)
+    definition = json.loads(frozen.read_text())
+    cases = rows(frozen)
     (output/'corpus.tsv').write_text(''.join('\t'.join(map(str, row)) + '\n' for row in cases))
     outcomes = defaultdict(list)
     for name, _, _, expected in cases:
         outcomes[name].append(expected)
-    fixtures = {shape: make_tree(output/shape, shape) for shape in ('wide', 'deep')}
-    frozen_hash, corpus_hash = run.digest(FROZEN), run.digest(output/'corpus.tsv')
+    fixtures = {shape: make_tree(output/shape, shape, definition.get('collections')) for shape in ('wide', 'deep')}
+    corpus_hash = run.digest(output/'corpus.tsv')
     os.sched_setaffinity(0, {args.cpu})
-    engines = ('goose', 'rust', 'go', 'node')
+    engines = ('goose', 'baseline', 'rust', 'go', 'node') if args.baseline else ('goose', 'rust', 'go', 'node')
     tasks = [(engine, mode) for engine in engines for mode in ('oneshot', 'reused', 'wide', 'deep')]
     samples = []
     report = {'recorded_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
-              'args': vars(args), 'prepared': manifest, 'frozen_sha256': frozen_hash,
-              'corpus_sha256': corpus_hash, 'sources': json.loads(FROZEN.read_text()),
+              'args': {**vars(args), 'corpus': str(frozen)}, 'prepared': manifest, 'frozen_sha256': frozen_hash,
+              'corpus_sha256': corpus_hash, 'sources': definition,
               'workloads': {name: {'rows': len(values), 'hits': sum(values)} for name, values in outcomes.items()},
               'fixtures': fixtures, 'samples': samples,
               'limits': 'Shared host, warm cache, ASCII dialect, synthetic empty-file collection trees. '
                         'Matcher timers exclude process startup/input IO; collection timers include traversal IO. '
-                        'No implementation changes after freezing this corpus; this is a separate validation set, '
-                        'not blind third-party validation or a universal ranking.'}
+                        'Corpus and implementation identities are retained. Old corpora may be tuning data; '
+                        'fresh validation must be frozen before optimization and measured after candidate freeze. '
+                        'This is not blind third-party validation or a universal ranking.'}
     checkpoint = output/'raw.partial.json'
     rng = random.Random(20261107)
     for round_index in range(args.rounds):
@@ -109,7 +119,7 @@ def main():
         rng.shuffle(order)
         for engine, mode in order:
             run.verify(manifest)
-            verify_fixtures(output, frozen_hash, corpus_hash, fixtures)
+            verify_fixtures(output, frozen_hash, corpus_hash, fixtures, frozen)
             walking = mode in fixtures
             count = args.walk_iterations if walking else (
                 args.compile_iterations if mode == 'oneshot' else args.iterations)
@@ -117,8 +127,8 @@ def main():
             fixture = output/'corpus.tsv'
             if walking:
                 fixture = output/mode/'tree'
-                if engine == 'goose':
-                    command = [str(run.OUT/'goose-walk')]
+                if engine in ('goose', 'baseline'):
+                    command = [str(run.OUT/f'{engine}-walk')]
             start = time.monotonic_ns()
             proc = subprocess.run([*command, str(fixture), str(count), 'walk' if walking else mode],
                                   capture_output=True, text=True, timeout=180)
@@ -146,7 +156,7 @@ def main():
             checkpoint.write_text(json.dumps(report, indent=2) + '\n')
             print(f'{round_index + 1}/{args.rounds} {engine} {mode}', flush=True)
     run.verify(manifest)
-    verify_fixtures(output, frozen_hash, corpus_hash, fixtures)
+    verify_fixtures(output, frozen_hash, corpus_hash, fixtures, frozen)
     summary = []
     for mode in ('oneshot', 'reused', 'wide', 'deep'):
         for workload in ([mode] if mode in fixtures else outcomes):
