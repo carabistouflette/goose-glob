@@ -4,7 +4,8 @@ Small, bounded path globbing for [Goose](https://github.com/aardappel/goose).
 Match relative byte paths, or collect regular files beneath a directory using
 [goose-fs](https://github.com/carabistouflette/goose-fs).
 
-Experimental API. Tested on Linux x86-64/glibc with Goose
+The v0.1.0 supported API is documented below and in the
+[compatibility policy](docs/COMPATIBILITY.md). Tested on Linux x86-64/glibc with Goose
 `eadca409f68210893f366e60d0c2f0dc29a339be`. The matcher uses only `std`;
 filesystem collection requires 64-bit Linux and the pinned goose-fs dependency.
 Other platforms are unvalidated. Apache-2.0.
@@ -17,6 +18,7 @@ and Linux headers with openat2 for directory collection.
 ```sh
 git clone https://github.com/carabistouflette/goose-glob.git
 cd goose-glob
+git checkout v0.1.0
 make setup
 .toolchain/goose/build/goose run examples/find.goose -- "$PWD"
 make check test differential
@@ -29,10 +31,10 @@ sorted by unsigned filename bytes. They are not globally sorted.
 
 ## Match a path
 
-In a program beside the checkout:
+In a program using the published release:
 
 ```goose
-import glob from "./goose-glob";
+import glob from "github.com/carabistouflette/goose-glob@v0.1.0";
 import std;
 fn main() {
     let matched, status = glob::matches("**/*.goose", "src/main.goose");
@@ -58,7 +60,7 @@ Applications declare the filesystem package in their root source. Goose resolves
 you separately validate another revision:
 
 ```goose
-import glob from "./goose-glob";
+import glob from "github.com/carabistouflette/goose-glob@v0.1.0";
 import fs from "github.com/carabistouflette/goose-fs@0d84729aed8d72463349cac7d9439d4039ccd6d3";
 import glob.walk;
 import std;

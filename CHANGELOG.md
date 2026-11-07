@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.1.0
+
+First non-prerelease. Documents the supported 0.1.x API, ownership, failure and
+compatibility policy on pinned Goose/Linux and goose-fs dependencies. Matcher
+and collector runtime bytes are unchanged from v0.1.0-alpha.5. Qualification adds
+clean installation, public consumption and independent contract review; existing
+benchmark results retain their original source identities and limitations.
+
+## 0.1.0-alpha.5
+
+Count globstars during parsing to remove a separate component pass. Retain all
+qualification samples and losses. Later profiling and rejected experiments leave
+this runtime unchanged.
+
+## 0.1.0-alpha.4
+
+Optimize long-path splitting, prepared prefix rejection and bounded small-directory
+collection. Retain slower cases and fresh validation evidence.
+
 ## 0.1.0-alpha.3
 
 Fused pattern validation/classification; literal-run scanning, whole-literal and

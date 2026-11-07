@@ -1,6 +1,6 @@
 # Security
 
-This is an experimental library; use the latest reviewed release. Report
+Use the latest reviewed release within your supported version series. Report
 suspected vulnerabilities through this repository's GitHub **Security → Report a
 vulnerability** form. Do not post sensitive details in a public issue.
 
