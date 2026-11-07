@@ -165,7 +165,8 @@ See [contributing](CONTRIBUTING.md), [security](SECURITY.md),
 The [alpha.4 qualification](bench/results/2026-11-07-alpha4/README.md) retains
 2485 samples across the legacy, regression and fresh frozen sets. On fresh inputs,
 alpha.4 has lower medians in 68/78 comparisons against the pinned alternatives,
-has lower medians than all three alternatives in 16/26 cells, and beats alpha.3 in
+has lower medians than all three alternatives in 16/26 cells, and improves on
+alpha.3 in
 18/26 cells. Both fresh clean-tree collections have lower medians than all three
 alternatives. Some short matching cases have higher medians; every range and
 slower result is retained. These are workload-specific observations.

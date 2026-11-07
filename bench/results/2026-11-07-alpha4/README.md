@@ -8,7 +8,7 @@ Measured candidate: `4c9e0f4090dbcbf9fb084eb5ce92a7ca291b11be`. Reference: `1c2c
 
 Changes: long paths use std byte searches; prepared literal-prefix misses validate without retaining unused spans; collection reuses validated spans and first tries a 4 KiB listing before retrying the original 1 MiB/4096-entry bounded adaptive path. Short-path scalar scanning and exact work/error contracts are preserved. Large directories may incur one additional partial listing.
 
-[Method and reproduction](../../README.md#alpha4-candidate-qualification) · [Fresh frozen inputs](../../validation-alpha4.json) · [Plot generator](render.py)
+[Method and reproduction](../../README.md#alpha4-candidate-qualification) · [Fresh frozen inputs](../../validation-alpha4.json) · [Plot generator](render.py) · [Interactive chart](comparison.html)
 
 Rust globset 0.4.21/glob 0.3.4, Go doublestar 4.10.4, Node picomatch 4.0.7/fast-glob 3.3.3. One-shot includes pattern compilation; reused mode excludes compilation where supported (Go has no prepared API). All results/path sets are preflighted; source, dependency, binary, corpus and complete fixture maps are checked. Node uses explicit JIT warmup. Error and filesystem policies differ.
 
