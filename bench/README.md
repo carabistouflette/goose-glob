@@ -207,3 +207,14 @@ synthetic long-literal sets. Long synthetic patterns improve, but real-path
 one-shot workloads regress under every variant. Alpha.5 remains unchanged and
 the fresh corpus remains unmeasured. Retained patches are evidence, not applied
 optimizations; the report includes source/binary/input hashes and reproduction.
+
+## Allocation profile
+
+The [alpha.5 allocation profile](results/2026-11-07-allocations/README.md)
+separates whole-process malloc-family counts from temporary metadata on Goose's
+data stacks. Doubling raw/prepared calls in three earlier workloads adds zero
+malloc-family allocations. Private generated-C counters record about 72–100
+logical temporary bytes per raw call versus 8–38 prepared, with reused storage.
+All twelve DHAT profiles, twelve counter runs, identities and reproduction
+helpers are retained. These counts do not measure total RSS or latency and do
+not justify a runtime/API change. Honk already shares prepared patterns.

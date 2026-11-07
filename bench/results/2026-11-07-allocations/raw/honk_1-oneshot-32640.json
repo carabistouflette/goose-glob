@@ -1,0 +1,139 @@
+{"dhatFileVersion":2
+,"mode":"heap","verb":"Allocated"
+,"bklt":true,"bkacc":true
+,"tu":"instrs","Mtu":"Minstr"
+,"tuth":500
+,"cmd":"/home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before .build/allocations/retained/honk_1.tsv 32640 oneshot"
+,"pid":11275
+,"te":27082204
+,"tg":421246
+,"pps":
+ [{"tb":400,"tbk":1
+  ,"tl":26862546
+  ,"mb":400,"mbk":1
+  ,"gb":400,"gbk":1
+  ,"eb":400,"ebk":1
+  ,"rb":0,"wb":400
+  ,"acc":[-400,1]
+  ,"fs":[1,2]
+  }
+ ,{"tb":65536,"tbk":1
+  ,"tl":26860907
+  ,"mb":65536,"mbk":1
+  ,"gb":65536,"gbk":1
+  ,"eb":65536,"ebk":1
+  ,"rb":0,"wb":0
+  ,"fs":[3,4,2]
+  }
+ ,{"tb":472,"tbk":1
+  ,"tl":161841
+  ,"mb":472,"mbk":1
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":3036,"wb":1390
+  ,"acc":[193,154,-2,142,-4,0,-8,193,-8,89,-8,12,-8,18,-8,13,-8,12,-8,23,-8,8,-8,2,-8,9,-8,1,-8,8,-8,3,-5,16,-2,7,3,-8,0,-2,1,-6,0,-8,10,-8,8,-8,0,-16,1,-8,0,-8,2,-4,10,-4,0,-8,1,-8,0,-8,18,-4,6,-4,4,-8,8,-88,1,-136,0,-8,1]
+  ,"fs":[5,6,7,4,2]
+  }
+ ,{"tb":360,"tbk":2
+  ,"tl":160829
+  ,"mb":240,"mbk":1
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":6121,"wb":4836
+  ,"fs":[8,9,7,4,2]
+  }
+ ,{"tb":1024,"tbk":1
+  ,"tl":160897
+  ,"mb":1024,"mbk":1
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":9335,"wb":4997
+  ,"acc":[20,-568,15,-332,13,-123,12]
+  ,"fs":[10,11,12,13,14,9,7,4,2]
+  }
+ ,{"tb":32,"tbk":1
+  ,"tl":334
+  ,"mb":0,"mbk":0
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":32,"wb":56
+  ,"acc":[-8,2,-24,3]
+  ,"fs":[15,7,4,2]
+  }
+ ,{"tb":152,"tbk":1
+  ,"tl":2049
+  ,"mb":0,"mbk":0
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":24,"wb":16
+  ,"acc":[-8,3,-8,2,-136,0]
+  ,"fs":[16,17,18,19,7,4,2]
+  }
+ ,{"tb":32,"tbk":1
+  ,"tl":1965
+  ,"mb":0,"mbk":0
+  ,"gb":0,"gbk":0
+  ,"eb":0,"ebk":0
+  ,"rb":0,"wb":32
+  ,"acc":[-32,1]
+  ,"fs":[20,21,19,7,4,2]
+  }
+ ,{"tb":72,"tbk":1
+  ,"tl":26694884
+  ,"mb":0,"mbk":0
+  ,"gb":72,"gbk":1
+  ,"eb":72,"ebk":1
+  ,"rb":925832,"wb":1189072
+  ,"acc":[-8,13,-8,7,-8,4,-8,1025,-8,1034,-16,65535,-8,3,-8,1]
+  ,"fs":[22]
+  }
+ ,{"tb":472,"tbk":1
+  ,"tl":9517
+  ,"mb":0,"mbk":0
+  ,"gb":472,"gbk":1
+  ,"eb":0,"ebk":0
+  ,"rb":638,"wb":696
+  ,"acc":[31,37,-2,29,-4,0,-16,9,-32,5,-8,12,-8,6,-8,2,-8,4,-8,1,-16,3,-4,12,11,-2,3,1,-8,0,-2,1,-6,0,-8,17,-8,3,-8,0,-16,1,-8,0,-8,2,-4,4,-4,0,-8,1,-8,0,-8,10,-4,11,-4,6,-8,16,-88,1,-136,0,-8,1]
+  ,"fs":[5,23,24,25]
+  }
+ ,{"tb":4096,"tbk":1
+  ,"tl":7997
+  ,"mb":4096,"mbk":1
+  ,"gb":4096,"gbk":1
+  ,"eb":0,"ebk":0
+  ,"rb":0,"wb":0
+  ,"fs":[10,11,12,26,27,28,24,25]
+  }
+ ]
+,"ftbl":
+ ["[root]"
+ ,"0x400E1A4: gs_rt_start_3025e5810379 (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x40025C9: main (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4008372: gs_native_stack_init (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x400E1C4: gs_rt_start_3025e5810379 (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4A66D0F: __fopen_internal (iofopen.c:65)"
+ ,"0x4A7E817: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:85)"
+ ,"0x40082C1: gs_native_stack_init (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4A67D55: getdelim (iogetdelim.c:65)"
+ ,"0x4A7E969: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)"
+ ,"0x4A66097: _IO_file_doallocate (filedoalloc.c:91)"
+ ,"0x4A767C5: _IO_doallocbuf (genops.c:373)"
+ ,"0x4A767C5: _IO_doallocbuf (genops.c:368)"
+ ,"0x4A7420E: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:538)"
+ ,"0x4A67D84: getdelim (iogetdelim.c:81)"
+ ,"0x4A7E6C2: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:180)"
+ ,"0x4A7AEAB: __pthread_attr_extension (pthread_attr_extension.c:28)"
+ ,"0x4A7B1FC: __pthread_attr_setaffinity_np (pthread_attr_setaffinity.c:45)"
+ ,"0x4A7B1FC: pthread_attr_setaffinity_np@@GLIBC_2.32 (pthread_attr_setaffinity.c:27)"
+ ,"0x4A7E783: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:194)"
+ ,"0x4A7B224: __pthread_attr_setaffinity_np (pthread_attr_setaffinity.c:51)"
+ ,"0x4A7B224: pthread_attr_setaffinity_np@@GLIBC_2.32 (pthread_attr_setaffinity.c:27)"
+ ,"0x40025D8: main (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x400F306: gs_os_read_file (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4004E29: main_g.constprop.0 (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4002594: main (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ,"0x4A755E5: _IO_file_xsgetn (fileops.c:1367)"
+ ,"0x4A67363: fread (iofread.c:38)"
+ ,"0x400F339: gs_os_read_file (in /home/arobin/Work/Projects/goose-libs/libraries/goose-glob/.build/alpha6/before)"
+ ]
+}
